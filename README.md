@@ -28,3 +28,5 @@ The numbers identifying where scripts can be run include:
 Only resizing the active instance is currently supported (i.e. 1).
 
 A list of commands to use in scripts can be seen by typing `help` in the Julti command line.
+
+Credits to Priffin for TallMacro/EyeZoom.
