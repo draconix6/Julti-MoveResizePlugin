@@ -7,6 +7,10 @@ In Julti, go to Scripts > Import Script. The plugin currently implements just on
 
 After creating your script, go to Julti Options > Hotkeys. Any hotkeyable scripts will be available at the bottom here.
 
+An example script to resize the game for more accurate eye measurements:
+
+`Tall Window;1;resize 1920 3500`
+
 An example script to resize the game for pixel perfect (boat eye) measurements:
 
 `Pixel Perfect;1;resize 1920 16384`
