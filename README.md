@@ -8,10 +8,15 @@ In Julti, go to Scripts > Import Script. The plugin currently implements just on
 After creating your script, go to Julti Options > Hotkeys. Any hotkeyable scripts will be available at the bottom here.
 
 An example script to resize the game for pixel perfect (boat eye) measurements:
+
 `Pixel Perfect;1;resize 1920 16384`
+
 An example script to resize the game for thin BT/tiktok BT:
+
 `Thin BT;1;resize 250 700`
+
 An example script to resize the game for planar fog abuse:
+
 `Planar Fog;1;resize 1920 300`
 
 If a resize is active, pressing the same hotkey will revert the window back to its original position.
