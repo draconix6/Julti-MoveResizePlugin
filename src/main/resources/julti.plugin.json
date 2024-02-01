@@ -1,6 +1,6 @@
 {
-  "name": "Julti Example Plugin",
-  "id": "julti-example-plugin",
+  "name": "Move & Resize",
+  "id": "julti-move-resize-plugin",
   "version": "${version}",
-  "initializer": "xyz.duncanruns.julti.exampleplugin.ExamplePlugin"
+  "initializer": "me.draconix6.moveresizeplugin.MoveResizePlugin"
 }
