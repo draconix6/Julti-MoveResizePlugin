@@ -56,7 +56,7 @@ public class ResizeCommand extends Command {
         // credits to priffin/tallmacro
         User32.INSTANCE.SetWindowPos(
             mcHwnd,
-            new WinDef.HWND(new Pointer(-1)),
+            new WinDef.HWND(new Pointer(0)),
             boundsToSet.x,
             boundsToSet.y,
             boundsToSet.width,
