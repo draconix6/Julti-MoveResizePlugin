@@ -28,13 +28,21 @@ If a resize is active, pressing the same hotkey will revert the window back to i
 ### Please note, according to speedrun.com/mc rules, only one out of bounds resolution may be used in any given run.
 
 More info on Julti scripts:
+
 Julti scripts consist of a name for the script, a number identifying where the script can be run, and a string of commands thereafter, all separated by a semicolon `;`.
+
 The numbers identifying where scripts can be run include:
+
 0 = Can only be run manually through the Scripts menu
+
 1 = Hotkeyable in-game
+
 2 = Hotkeyable on the wall
+
 3 = Hotkeyable either in-game or on the wall
+
 Only resizing the active instance is currently supported (i.e. 1).
+
 
 A list of commands to use in scripts can be seen by typing `help` in the Julti command line.
 
