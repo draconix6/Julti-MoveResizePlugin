@@ -3,6 +3,7 @@ package me.draconix6.moveresizeplugin.gui;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
+import me.draconix6.moveresizeplugin.MoveResizePlugin;
 import me.draconix6.moveresizeplugin.win32.GDI32Extra;
 import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
@@ -23,11 +24,8 @@ import java.util.concurrent.TimeUnit;
  * @author DuncanRuns
  */
 public class EyeSeeGUI extends JFrame implements WindowListener {
-
     private static final WinDef.DWORD SRCCOPY = new WinDef.DWORD(0x00CC0020);
-
-    private OverlayGUI overlay;
-
+    private final OverlayGUI overlay = new OverlayGUI();
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private WinDef.HWND sourceHwnd;
     private final WinDef.HWND eyeSeeHwnd;
@@ -36,49 +34,35 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
     public EyeSeeGUI() {
         super();
-        addWindowListener(this);
-        setResizable(false);
-        String randTitle = "Julti EyeSee " + new Random().nextInt();
-        setTitle(randTitle);
-        setVisible(true);
+        this.addWindowListener(this);
+        this.setResizable(false);
+        this.setTitle("Julti EyeSee");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // set borderless
+        this.setVisible(true);
         eyeSeeHwnd = new WinDef.HWND(Native.getWindowPointer(this));
-        setTitle("Julti EyeSee");
         WindowStateUtil.setHwndBorderless(eyeSeeHwnd);
+
         tick();
         // 30 = refresh rate
         // TODO: adjustable?
-        executor.scheduleAtFixedRate(this::tick, 50_000_000, 1_000_000_000L / 30, TimeUnit.NANOSECONDS);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(false);
+        this.executor.scheduleAtFixedRate(this::tick, 50_000_000, 1_000_000_000L / 30, TimeUnit.NANOSECONDS);
+        this.setVisible(false);
     }
 
     private void tick() {
         if (!currentlyShowing) return;
-
         if (sourceHwnd == null) return;
+
+        // get snapshot of MC window
         Rectangle rectangle = getYoinkArea(sourceHwnd);
         WinDef.HDC sourceHDC = User32.INSTANCE.GetDC(sourceHwnd);
         WinDef.HDC eyeSeeHDC = User32.INSTANCE.GetDC(eyeSeeHwnd);
 
+        // render MC window to EyeSee window
         GDI32Extra.INSTANCE.SetStretchBltMode(eyeSeeHDC, 3);
-
         GDI32Extra.INSTANCE.StretchBlt(eyeSeeHDC, 0, 0, bounds.width, bounds.height, sourceHDC, rectangle.x, rectangle.y, rectangle.width, rectangle.height, SRCCOPY);
-
-//        Image logo = Toolkit.getDefaultToolkit().getImage(JultiOptions.getJultiDir().resolve("overlay.png").toString());
-//        WinDef.HDC overlayHDC = me.draconix6.moveresizeplugin.win32.User32.INSTANCE.
-
-//        JPanel pane = new JPanel() {
-//            @Override
-//            protected void paintComponent(Graphics g) {
-//                super.paintComponent(g);
-//                g.drawImage(logo, 0, 0, bounds.width, bounds.height, null);
-//            }
-//        };
-//
-//        this.add(pane);
-
-//        User32.INSTANCE.ReleaseDC(sourceHwnd, sourceHDC);
-//        User32.INSTANCE.ReleaseDC(eyeSeeHwnd, eyeSeeHDC);
     }
 
     public void showEyeSee(Rectangle zoomRect) {
@@ -116,17 +100,21 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
                 0x0400
         );
 
-        this.overlay = new OverlayGUI();
+//        this.overlay = new OverlayGUI();
         this.overlay.setVisible(true);
         this.overlay.setAlwaysOnTop(true);
         WindowStateUtil.setHwndBorderless(new WinDef.HWND(Native.getWindowPointer(overlay)));
 
         // add overlay image & resize accordingly
-        Image image = this.overlay.icon.getImage();
-        Image newImage = image.getScaledInstance(projectorWidth, projectorHeight, Image.SCALE_SMOOTH);
-        this.overlay.icon = new ImageIcon(newImage);
-        this.overlay.label1 = new JLabel(this.overlay.icon);
-        this.overlay.add(this.overlay.label1);
+        if (!MoveResizePlugin.prevWindowSize.equals(zoomRect)) {
+            MoveResizePlugin.prevWindowSize = zoomRect;
+
+            Image image = this.overlay.icon.getImage();
+            Image newImage = image.getScaledInstance(projectorWidth, projectorHeight, Image.SCALE_SMOOTH);
+            this.overlay.icon = new ImageIcon(newImage);
+            this.overlay.label = new JLabel(this.overlay.icon);
+            this.overlay.add(this.overlay.label);
+        }
 
         this.overlay.setSize(projectorWidth, projectorHeight);
         this.overlay.setLocation(projectorXPos, projectorYPos);

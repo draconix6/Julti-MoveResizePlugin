@@ -2,30 +2,26 @@ package me.draconix6.moveresizeplugin.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class OverlayGUI extends JFrame {
-
     public ImageIcon icon;
-    public JLabel label1;
+    public JLabel label;
 
     public OverlayGUI() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout(0, 0));
-        panel.setBackground(new Color(-16777216));
-        panel.setEnabled(true);
-        panel.setForeground(new Color(-16777216));
-        this.setContentPane(panel);
         this.setTitle("EyeSee Overlay");
         this.setUndecorated(true);
         this.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.0f));
-
-        panel.setSize(800, 420);
-        panel.setOpaque(false);
-
-        this.setContentPane(panel);
         this.setLocationRelativeTo(null);
 
-        this.icon = new ImageIcon(this.getClass().getResource("/overlay.png"));
-        this.label1 = new JLabel(this.icon);
+        JPanel panel = new JPanel();
+        panel.setSize(800, 420);
+        panel.setOpaque(false);
+        this.setContentPane(panel);
+
+        this.setVisible(false);
+
+        this.icon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/overlay.png")));
+        this.label = new JLabel(this.icon);
     }
 }
