@@ -1,11 +1,15 @@
 package me.draconix6.moveresizeplugin;
 
 import com.google.common.io.Resources;
-import org.apache.logging.log4j.Level;
+import me.draconix6.moveresizeplugin.command.CursorSpeedCommand;
+import me.draconix6.moveresizeplugin.command.ResizeCommand;
 import me.draconix6.moveresizeplugin.gui.EyeSeeGUI;
+import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.JultiAppLaunch;
+import xyz.duncanruns.julti.command.CommandManager;
 import xyz.duncanruns.julti.gui.JultiGUI;
+import xyz.duncanruns.julti.plugin.PluginEvents;
 import xyz.duncanruns.julti.plugin.PluginInitializer;
 import xyz.duncanruns.julti.plugin.PluginManager;
 
@@ -31,7 +35,13 @@ public class MoveResizePlugin implements PluginInitializer {
     @Override
     public void initialize() {
         // This gets run once when Julti launches
-        InitPlugin.init();
+        PluginEvents.RunnableEventType.RELOAD.register(() -> {
+            // This gets run when Julti launches and every time the profile is switched
+            Julti.log(Level.INFO, "Move & Resize Plugin Reloaded!");
+        });
+
+        CommandManager.getMainManager().registerCommand(new ResizeCommand());
+        CommandManager.getMainManager().registerCommand(new CursorSpeedCommand());
         gui.hideEyeSee();
         Julti.log(Level.INFO, "Move & Resize Plugin Initialized");
     }
