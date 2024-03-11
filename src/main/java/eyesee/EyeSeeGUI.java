@@ -109,7 +109,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
     public void showEyeSee(Rectangle zoomRect) {
         System.out.println("Showing EyeSee...");
-        if (sourceHwnd == null) sourceHwnd = new WinDef.HWND(win32.User32.INSTANCE.GetForegroundWindow());
+        sourceHwnd = new WinDef.HWND(win32.User32.INSTANCE.GetForegroundWindow());
         currentlyShowing = true;
         setVisible(true);
         setAlwaysOnTop(true);
