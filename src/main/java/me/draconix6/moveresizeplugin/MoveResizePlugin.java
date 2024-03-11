@@ -18,10 +18,10 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 public class MoveResizePlugin implements PluginInitializer {
-    public static EyeSeeGUI gui = new EyeSeeGUI();
     public static int winStyle = 0;
     public static int prevCursorSpeed = 0;
     public static boolean changedCursorSpeed = false;
+    private static EyeSeeGUI gui = null;
 
     public static void main(String[] args) throws IOException {
         // This is only used to test the plugin in the dev environment
@@ -42,7 +42,6 @@ public class MoveResizePlugin implements PluginInitializer {
 
         CommandManager.getMainManager().registerCommand(new ResizeCommand());
         CommandManager.getMainManager().registerCommand(new CursorSpeedCommand());
-        gui.hideEyeSee();
         Julti.log(Level.INFO, "Move & Resize Plugin Initialized");
     }
 
@@ -54,5 +53,13 @@ public class MoveResizePlugin implements PluginInitializer {
     @Override
     public void onMenuButtonPress() {
         JOptionPane.showMessageDialog(JultiGUI.getPluginsGUI(), "More config coming soon, check github.com/draconix6/Julti-MoveResizePlugin for updates.", "Julti Move Resize Plugin", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static EyeSeeGUI getESGui() {
+        if(gui == null) {
+            gui = new EyeSeeGUI();
+            gui.hideEyeSee();
+        }
+        return gui;
     }
 }

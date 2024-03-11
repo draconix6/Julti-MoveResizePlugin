@@ -62,10 +62,10 @@ public class ResizeCommand extends Command {
 
         // xyz.duncanruns.eyesee
         if (args.length > 2 && args[2].equals("zoom")) {
-            if (!MoveResizePlugin.gui.isShowing()) {
-                MoveResizePlugin.gui.showEyeSee(boundsToSet);
+            if (!MoveResizePlugin.getESGui().isShowing()) {
+                MoveResizePlugin.getESGui().showEyeSee(boundsToSet);
             } else {
-                MoveResizePlugin.gui.hideEyeSee();
+                MoveResizePlugin.getESGui().hideEyeSee();
             }
         }
 
