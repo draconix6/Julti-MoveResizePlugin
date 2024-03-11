@@ -164,7 +164,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         } else {
             WinDef.RECT rect = new WinDef.RECT();
             User32.INSTANCE.GetClientRect(hwnd, rect);
-            return new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
+            rectangle = new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
         }
         // TODO: figure these out better
         int width = 60;
