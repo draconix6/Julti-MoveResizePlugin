@@ -3,10 +3,11 @@ package xyz.duncanruns.eyesee;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
-import org.apache.logging.log4j.Level;
 import me.draconix6.moveresizeplugin.win32.GDI32Extra;
+import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.util.MonitorUtil;
+import xyz.duncanruns.julti.util.WindowStateUtil;
 import xyz.duncanruns.julti.win32.User32;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
     private WinDef.HWND sourceHwnd;
     private final WinDef.HWND eyeSeeHwnd;
     private boolean currentlyShowing = false;
-    private Rectangle bounds = new Rectangle(0, 0, 0, 0);
+    private final Rectangle bounds = new Rectangle(0, 0, 0, 0);
 
     public EyeSeeGUI() {
         super();
@@ -91,7 +92,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         // credit to priffin for these calculations
         MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
         int projectorWidth = (monitor.width - zoomRect.width) / 2;
-        int projectorHeight = (int)(projectorWidth / (16.0f / 9.0f)); // this was weird, just sticking to 16:9
+        int projectorHeight = (int) (projectorWidth / (16.0f / 9.0f)); // this was weird, just sticking to 16:9
 
         if (projectorWidth == 0 || projectorHeight == 0) {
             Julti.log(Level.WARN, "Not enough room to create EyeSee window - please decrease your resize width!"); // TODO: "or manually change your EyeSee window settings!"
@@ -162,7 +163,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
             rectangle = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
         } else {
             WinDef.RECT rect = new WinDef.RECT();
-            User32.INSTANCE.GetClientRect(hwnd,rect);
+            User32.INSTANCE.GetClientRect(hwnd, rect);
             return new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
         }
         // TODO: figure these out better

@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.cancelrequester.CancelRequester;
 import xyz.duncanruns.julti.command.Command;
-import xyz.duncanruns.julti.win32.User32;
 
 public class CursorSpeedCommand extends Command {
 
