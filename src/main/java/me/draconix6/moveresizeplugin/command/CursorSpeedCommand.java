@@ -1,19 +1,12 @@
-package me.draconix6.moveresizeplugin;
+package me.draconix6.moveresizeplugin.command;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.ptr.IntByReference;
+import me.draconix6.moveresizeplugin.MoveResizePlugin;
+import me.draconix6.moveresizeplugin.win32.User32Extra;
 import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
-import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.cancelrequester.CancelRequester;
 import xyz.duncanruns.julti.command.Command;
-import xyz.duncanruns.julti.command.CommandFailedException;
-import xyz.duncanruns.julti.instance.MinecraftInstance;
-import xyz.duncanruns.julti.management.InstanceManager;
-import xyz.duncanruns.julti.util.WindowStateUtil;
-import win32.User32;
-
-import java.awt.*;
 
 public class CursorSpeedCommand extends Command {
 
@@ -26,8 +19,8 @@ public class CursorSpeedCommand extends Command {
 
     @Override
     public int getMinArgs() {
-        return 2;
-    } // TODO: fix & allow for one arg
+        return 1;
+    }
 
     @Override
     public int getMaxArgs() {
@@ -39,35 +32,43 @@ public class CursorSpeedCommand extends Command {
         return "cursorspeed";
     }
 
+    @SuppressWarnings("")
     @Override
     public void run(String[] args, CancelRequester cancelRequester) {
         // credits to Priffin againe
-        int currentSpeed = 0;
-        User32.INSTANCE.SystemParametersInfoA(0x70, 0, currentSpeed, 0);
-        Julti.log(Level.DEBUG, "Current cursor speed: " + Integer.toString(currentSpeed));
+        int currentSpeed = getCurrentCursorSpeed();
+        Julti.log(Level.DEBUG, "Current cursor speed: " + currentSpeed);
 
         // has explicit initial speed - set to it
         // if ((args.length > 1 && currentSpeed != Integer.parseInt(args[1]))) {
         if (args.length > 1) {
             if (MoveResizePlugin.changedCursorSpeed) {
-                User32.INSTANCE.SystemParametersInfoA(0x71, 0, Integer.parseInt(args[1]), 0);
+                User32Extra.INSTANCE.SystemParametersInfoA(0x71, 0, Integer.parseInt(args[1]), 0);
                 MoveResizePlugin.changedCursorSpeed = false;
-            }
-            else {
-                User32.INSTANCE.SystemParametersInfoA(0x71, 0, Integer.parseInt(args[0]), 0);
+            } else {
+                User32Extra.INSTANCE.SystemParametersInfoA(0x71, 0, Integer.parseInt(args[0]), 0);
                 MoveResizePlugin.changedCursorSpeed = true;
             }
             return;
         }
         // changing speed from default - save & change cursor speed
-        else if (MoveResizePlugin.prevCursorSpeed == 0 && args.length < 2) {
+        else if (MoveResizePlugin.prevCursorSpeed == 0) {
             MoveResizePlugin.prevCursorSpeed = currentSpeed;
         }
         // returning to saved speed
         else if (currentSpeed != MoveResizePlugin.prevCursorSpeed) {
-            User32.INSTANCE.SystemParametersInfoA(0x71, 0, MoveResizePlugin.prevCursorSpeed, 0);
+            User32Extra.INSTANCE.SystemParametersInfoA(0x71, 0, MoveResizePlugin.prevCursorSpeed, 0);
             return;
         }
-        User32.INSTANCE.SystemParametersInfoA(0x71, 0, Integer.parseInt(args[0]), 0);
+        User32Extra.INSTANCE.SystemParametersInfoA(0x71, 0, Integer.parseInt(args[0]), 0);
+    }
+
+    /**
+     * @author DuncanRuns
+     */
+    private static int getCurrentCursorSpeed(){
+        IntByReference ref = new IntByReference(0);
+        User32Extra.INSTANCE.SystemParametersInfoA(0x70, 0, ref, 0);
+        return ref.getValue();
     }
 }

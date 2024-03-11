@@ -1,10 +1,8 @@
-package me.draconix6.moveresizeplugin;
+package me.draconix6.moveresizeplugin.command;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
-import eyesee.EyeSeeGUI;
-import org.apache.logging.log4j.Level;
-import xyz.duncanruns.julti.Julti;
+import me.draconix6.moveresizeplugin.MoveResizePlugin;
 import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.cancelrequester.CancelRequester;
 import xyz.duncanruns.julti.command.Command;
@@ -62,19 +60,18 @@ public class ResizeCommand extends Command {
             boundsToSet = WindowStateUtil.withTopLeftToCenter(boundsToSet);
         }
 
-        // eyesee
+        // xyz.duncanruns.eyesee
         if (args.length > 2 && args[2].equals("zoom")) {
-            if (!MoveResizePlugin.gui.isShowing()) {
-                MoveResizePlugin.gui.showEyeSee(boundsToSet);
+            if (!MoveResizePlugin.getESGui().isShowing()) {
+                MoveResizePlugin.getESGui().showEyeSee(boundsToSet);
             } else {
-                MoveResizePlugin.gui.hideEyeSee();
+                MoveResizePlugin.getESGui().hideEyeSee();
             }
         }
 
         if (!stretching) {
             WindowStateUtil.setHwndStyle(mcHwnd, MoveResizePlugin.winStyle);
-        }
-        else {
+        } else {
             MoveResizePlugin.winStyle = WindowStateUtil.getHwndStyle(mcHwnd);
             WindowStateUtil.setHwndBorderless(mcHwnd);
         }
@@ -82,13 +79,13 @@ public class ResizeCommand extends Command {
         // credits to priffin/tallmacro
         User32.INSTANCE.SetForegroundWindow(mcHwnd);
         User32.INSTANCE.SetWindowPos(
-            mcHwnd,
-            new WinDef.HWND(new Pointer(0)),
-            boundsToSet.x,
-            boundsToSet.y,
-            boundsToSet.width,
-            boundsToSet.height,
-            new WinDef.UINT(0x0400)
+                mcHwnd,
+                new WinDef.HWND(new Pointer(0)),
+                boundsToSet.x,
+                boundsToSet.y,
+                boundsToSet.width,
+                boundsToSet.height,
+                new WinDef.UINT(0x0400)
         );
 //        Julti.waitForExecute(() -> DoAllFastUtil.doAllFast(toReset, instance -> ResetHelper.getManager().resetInstance(instance)));
     }
