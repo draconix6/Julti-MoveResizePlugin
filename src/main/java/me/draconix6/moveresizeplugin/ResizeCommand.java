@@ -2,6 +2,9 @@ package me.draconix6.moveresizeplugin;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
+import eyesee.EyeSeeGUI;
+import org.apache.logging.log4j.Level;
+import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.cancelrequester.CancelRequester;
 import xyz.duncanruns.julti.command.Command;
@@ -44,16 +47,37 @@ public class ResizeCommand extends Command {
 
         JultiOptions options = JultiOptions.getJultiOptions();
         WinDef.HWND mcHwnd = activeInstance.getHwnd();
+
+        boolean stretching = true;
+
         Rectangle currentBounds = WindowStateUtil.getHwndRectangle(mcHwnd);
         Rectangle boundsToSet = new Rectangle(options.windowPos[0], options.windowPos[1], Integer.parseInt(args[0]), Integer.parseInt(args[1]));
         if (currentBounds.width == boundsToSet.width && currentBounds.height == boundsToSet.height) {
             boundsToSet.width = options.playingWindowSize[0];
             boundsToSet.height = options.playingWindowSize[1];
+            stretching = false;
         }
         if (options.windowPosIsCenter) {
             boundsToSet = WindowStateUtil.withTopLeftToCenter(boundsToSet);
         }
+
+        if (!MoveResizePlugin.gui.isShowing()) {
+            MoveResizePlugin.gui.showEyeSee(boundsToSet);
+        }
+        else {
+            MoveResizePlugin.gui.hideEyeSee();
+        }
+
+        if (!stretching) {
+            WindowStateUtil.setHwndStyle(mcHwnd, MoveResizePlugin.winStyle);
+        }
+        else {
+            MoveResizePlugin.winStyle = WindowStateUtil.getHwndStyle(mcHwnd);
+            WindowStateUtil.setHwndBorderless(mcHwnd);
+        }
+
         // credits to priffin/tallmacro
+        User32.INSTANCE.SetForegroundWindow(mcHwnd);
         User32.INSTANCE.SetWindowPos(
             mcHwnd,
             new WinDef.HWND(new Pointer(0)),
