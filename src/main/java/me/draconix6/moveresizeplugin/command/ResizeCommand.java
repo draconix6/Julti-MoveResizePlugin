@@ -71,8 +71,7 @@ public class ResizeCommand extends Command {
 
         if (!stretching) {
             WindowStateUtil.setHwndStyle(mcHwnd, MoveResizePlugin.winStyle);
-        }
-        else {
+        } else {
             MoveResizePlugin.winStyle = WindowStateUtil.getHwndStyle(mcHwnd);
             WindowStateUtil.setHwndBorderless(mcHwnd);
         }
@@ -80,13 +79,13 @@ public class ResizeCommand extends Command {
         // credits to priffin/tallmacro
         User32.INSTANCE.SetForegroundWindow(mcHwnd);
         User32.INSTANCE.SetWindowPos(
-            mcHwnd,
-            new WinDef.HWND(new Pointer(0)),
-            boundsToSet.x,
-            boundsToSet.y,
-            boundsToSet.width,
-            boundsToSet.height,
-            new WinDef.UINT(0x0400)
+                mcHwnd,
+                new WinDef.HWND(new Pointer(0)),
+                boundsToSet.x,
+                boundsToSet.y,
+                boundsToSet.width,
+                boundsToSet.height,
+                new WinDef.UINT(0x0400)
         );
 //        Julti.waitForExecute(() -> DoAllFastUtil.doAllFast(toReset, instance -> ResetHelper.getManager().resetInstance(instance)));
     }

@@ -23,20 +23,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class EyeSeeGUI extends JFrame implements WindowListener {
 
-    private static EyeSeeGUI INSTANCE = null;
-
-    private static final Robot ROBOT;
     private static final WinDef.DWORD SRCCOPY = new WinDef.DWORD(0x00CC0020);
 
     private OverlayGUI overlay;
-
-    static {
-        try {
-            ROBOT = new Robot();
-        } catch (AWTException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private WinDef.HWND sourceHwnd;
@@ -60,16 +49,6 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         executor.scheduleAtFixedRate(this::tick, 50_000_000, 1_000_000_000L / 30, TimeUnit.NANOSECONDS);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(false);
-    }
-
-    public static EyeSeeGUI getGUI(boolean reload) {
-        if (reload) {
-            INSTANCE = null;
-        }
-        if (INSTANCE == null) {
-            INSTANCE = new EyeSeeGUI();
-        }
-        return INSTANCE;
     }
 
     private void tick() {
