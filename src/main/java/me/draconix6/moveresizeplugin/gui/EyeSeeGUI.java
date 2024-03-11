@@ -1,24 +1,19 @@
-package eyesee;
+package me.draconix6.moveresizeplugin.gui;
 
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
+import me.draconix6.moveresizeplugin.win32.GDI32Extra;
 import org.apache.logging.log4j.Level;
-import win32.KeyboardUtil;
-import win32.User32;
-import win32.GDI32Extra;
-import win32.HwndUtil;
 import xyz.duncanruns.julti.Julti;
-import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.util.MonitorUtil;
+import xyz.duncanruns.julti.util.WindowStateUtil;
+import xyz.duncanruns.julti.win32.User32;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.geom.AffineTransform;
-import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -29,26 +24,15 @@ import java.util.concurrent.TimeUnit;
  */
 public class EyeSeeGUI extends JFrame implements WindowListener {
 
-    private static EyeSeeGUI INSTANCE = null;
-
-    private static final Robot ROBOT;
     private static final WinDef.DWORD SRCCOPY = new WinDef.DWORD(0x00CC0020);
 
     private OverlayGUI overlay;
-
-    static {
-        try {
-            ROBOT = new Robot();
-        } catch (AWTException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private WinDef.HWND sourceHwnd;
     private final WinDef.HWND eyeSeeHwnd;
     private boolean currentlyShowing = false;
-    private Rectangle bounds = new Rectangle(0, 0, 0, 0);
+    private final Rectangle bounds = new Rectangle(0, 0, 0, 0);
 
     public EyeSeeGUI() {
         super();
@@ -57,9 +41,9 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         String randTitle = "Julti EyeSee " + new Random().nextInt();
         setTitle(randTitle);
         setVisible(true);
-        eyeSeeHwnd = new WinDef.HWND(HwndUtil.waitForWindow(randTitle));
+        eyeSeeHwnd = new WinDef.HWND(Native.getWindowPointer(this));
         setTitle("Julti EyeSee");
-        HwndUtil.setHwndBorderless(eyeSeeHwnd.getPointer());
+        WindowStateUtil.setHwndBorderless(eyeSeeHwnd);
         tick();
         // 30 = refresh rate
         // TODO: adjustable?
@@ -68,30 +52,20 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         setVisible(false);
     }
 
-    public static EyeSeeGUI getGUI(boolean reload) {
-        if (reload) {
-            INSTANCE = null;
-        }
-        if (INSTANCE == null) {
-            INSTANCE = new EyeSeeGUI();
-        }
-        return INSTANCE;
-    }
-
     private void tick() {
         if (!currentlyShowing) return;
 
         if (sourceHwnd == null) return;
         Rectangle rectangle = getYoinkArea(sourceHwnd);
-        WinDef.HDC sourceHDC = win32.User32.INSTANCE.GetDC(sourceHwnd);
-        WinDef.HDC eyeSeeHDC = win32.User32.INSTANCE.GetDC(eyeSeeHwnd);
+        WinDef.HDC sourceHDC = User32.INSTANCE.GetDC(sourceHwnd);
+        WinDef.HDC eyeSeeHDC = User32.INSTANCE.GetDC(eyeSeeHwnd);
 
         GDI32Extra.INSTANCE.SetStretchBltMode(eyeSeeHDC, 3);
 
         GDI32Extra.INSTANCE.StretchBlt(eyeSeeHDC, 0, 0, bounds.width, bounds.height, sourceHDC, rectangle.x, rectangle.y, rectangle.width, rectangle.height, SRCCOPY);
 
 //        Image logo = Toolkit.getDefaultToolkit().getImage(JultiOptions.getJultiDir().resolve("overlay.png").toString());
-//        WinDef.HDC overlayHDC = win32.User32.INSTANCE.
+//        WinDef.HDC overlayHDC = me.draconix6.moveresizeplugin.win32.User32.INSTANCE.
 
 //        JPanel pane = new JPanel() {
 //            @Override
@@ -109,7 +83,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
     public void showEyeSee(Rectangle zoomRect) {
         System.out.println("Showing EyeSee...");
-        sourceHwnd = new WinDef.HWND(win32.User32.INSTANCE.GetForegroundWindow());
+        sourceHwnd = User32.INSTANCE.GetForegroundWindow();
         currentlyShowing = true;
         setVisible(true);
         setAlwaysOnTop(true);
@@ -118,7 +92,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         // credit to priffin for these calculations
         MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
         int projectorWidth = (monitor.width - zoomRect.width) / 2;
-        int projectorHeight = (int)(projectorWidth / (16.0f / 9.0f)); // this was weird, just sticking to 16:9
+        int projectorHeight = (int) (projectorWidth / (16.0f / 9.0f)); // this was weird, just sticking to 16:9
 
         if (projectorWidth == 0 || projectorHeight == 0) {
             Julti.log(Level.WARN, "Not enough room to create EyeSee window - please decrease your resize width!"); // TODO: "or manually change your EyeSee window settings!"
@@ -131,22 +105,21 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         int projectorXPos = 0;
         int projectorYPos = (monitor.height - projectorHeight) / 2;
 
-        // move eyesee window
+        // move xyz.duncanruns.eyesee window
         User32.INSTANCE.SetWindowPos(
-                eyeSeeHwnd.getPointer(),
-                new WinDef.HWND(new Pointer(0)).getPointer(),
+                eyeSeeHwnd,
+                new WinDef.HWND(new Pointer(0)),
                 projectorXPos,
                 projectorYPos,
                 projectorWidth,
                 projectorHeight,
-                new WinDef.UINT(0x0400)
+                0x0400
         );
 
         this.overlay = new OverlayGUI();
         this.overlay.setVisible(true);
         this.overlay.setAlwaysOnTop(true);
-        WinDef.HWND overlayHwnd = new WinDef.HWND(HwndUtil.waitForWindow("EyeSee Overlay"));
-        HwndUtil.setHwndBorderless(overlayHwnd.getPointer());
+        WindowStateUtil.setHwndBorderless(new WinDef.HWND(Native.getWindowPointer(overlay)));
 
         // add overlay image & resize accordingly
         Image image = this.overlay.icon.getImage();
@@ -166,13 +139,13 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
         MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
         User32.INSTANCE.SetWindowPos(
-                eyeSeeHwnd.getPointer(),
-                new WinDef.HWND(new Pointer(0)).getPointer(),
+                eyeSeeHwnd,
+                new WinDef.HWND(new Pointer(0)),
                 0,
                 -monitor.height,
                 1,
                 1,
-                new WinDef.UINT(0x0400)
+                0x0400
         );
 
         if (this.overlay == null) return;
@@ -189,7 +162,9 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         if (hwnd == null) {
             rectangle = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
         } else {
-            rectangle = HwndUtil.getHwndInnerRectangle(hwnd.getPointer());
+            WinDef.RECT rect = new WinDef.RECT();
+            User32.INSTANCE.GetClientRect(hwnd, rect);
+            rectangle = new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
         }
         // TODO: figure these out better
         int width = 60;
