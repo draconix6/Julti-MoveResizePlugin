@@ -1,13 +1,13 @@
 package xyz.duncanruns.eyesee;
 
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.Level;
-import me.draconix6.moveresizeplugin.win32.User32;
 import me.draconix6.moveresizeplugin.win32.GDI32Extra;
-import me.draconix6.moveresizeplugin.win32.HwndUtil;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.util.MonitorUtil;
+import xyz.duncanruns.julti.win32.User32;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,9 +40,9 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         String randTitle = "Julti EyeSee " + new Random().nextInt();
         setTitle(randTitle);
         setVisible(true);
-        eyeSeeHwnd = new WinDef.HWND(HwndUtil.waitForWindow(randTitle));
+        eyeSeeHwnd = new WinDef.HWND(Native.getWindowPointer(this));
         setTitle("Julti EyeSee");
-        HwndUtil.setHwndBorderless(eyeSeeHwnd.getPointer());
+        this.setUndecorated(true);
         tick();
         // 30 = refresh rate
         // TODO: adjustable?
@@ -56,8 +56,8 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
         if (sourceHwnd == null) return;
         Rectangle rectangle = getYoinkArea(sourceHwnd);
-        WinDef.HDC sourceHDC = me.draconix6.moveresizeplugin.win32.User32.INSTANCE.GetDC(sourceHwnd);
-        WinDef.HDC eyeSeeHDC = me.draconix6.moveresizeplugin.win32.User32.INSTANCE.GetDC(eyeSeeHwnd);
+        WinDef.HDC sourceHDC = User32.INSTANCE.GetDC(sourceHwnd);
+        WinDef.HDC eyeSeeHDC = User32.INSTANCE.GetDC(eyeSeeHwnd);
 
         GDI32Extra.INSTANCE.SetStretchBltMode(eyeSeeHDC, 3);
 
@@ -82,7 +82,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
     public void showEyeSee(Rectangle zoomRect) {
         System.out.println("Showing EyeSee...");
-        if (sourceHwnd == null) sourceHwnd = new WinDef.HWND(me.draconix6.moveresizeplugin.win32.User32.INSTANCE.GetForegroundWindow());
+        if (sourceHwnd == null) sourceHwnd = User32.INSTANCE.GetForegroundWindow();
         currentlyShowing = true;
         setVisible(true);
         setAlwaysOnTop(true);
@@ -106,20 +106,19 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
         // move xyz.duncanruns.eyesee window
         User32.INSTANCE.SetWindowPos(
-                eyeSeeHwnd.getPointer(),
-                new WinDef.HWND(new Pointer(0)).getPointer(),
+                eyeSeeHwnd,
+                new WinDef.HWND(new Pointer(0)),
                 projectorXPos,
                 projectorYPos,
                 projectorWidth,
                 projectorHeight,
-                new WinDef.UINT(0x0400)
+                0x0400
         );
 
         this.overlay = new OverlayGUI();
         this.overlay.setVisible(true);
         this.overlay.setAlwaysOnTop(true);
-        WinDef.HWND overlayHwnd = new WinDef.HWND(HwndUtil.waitForWindow("EyeSee Overlay"));
-        HwndUtil.setHwndBorderless(overlayHwnd.getPointer());
+        overlay.setUndecorated(true);
 
         // add overlay image & resize accordingly
         Image image = this.overlay.icon.getImage();
@@ -139,13 +138,13 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
         MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
         User32.INSTANCE.SetWindowPos(
-                eyeSeeHwnd.getPointer(),
-                new WinDef.HWND(new Pointer(0)).getPointer(),
+                eyeSeeHwnd,
+                new WinDef.HWND(new Pointer(0)),
                 0,
                 -monitor.height,
                 1,
                 1,
-                new WinDef.UINT(0x0400)
+                0x0400
         );
 
         if (this.overlay == null) return;
@@ -162,7 +161,9 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         if (hwnd == null) {
             rectangle = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
         } else {
-            rectangle = HwndUtil.getHwndInnerRectangle(hwnd.getPointer());
+            WinDef.RECT rect = new WinDef.RECT();
+            User32.INSTANCE.GetClientRect(hwnd,rect);
+            return new Rectangle(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
         }
         // TODO: figure these out better
         int width = 60;
