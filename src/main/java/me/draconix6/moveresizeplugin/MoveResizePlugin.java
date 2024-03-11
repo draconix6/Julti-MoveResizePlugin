@@ -18,6 +18,8 @@ import java.nio.charset.Charset;
 public class MoveResizePlugin implements PluginInitializer {
     public static EyeSeeGUI gui = new EyeSeeGUI();
     public static int winStyle = 0;
+    public static int prevCursorSpeed = 0;
+    public static boolean changedCursorSpeed = false;
 
     public static void main(String[] args) throws IOException {
         // This is only used to test the plugin in the dev environment

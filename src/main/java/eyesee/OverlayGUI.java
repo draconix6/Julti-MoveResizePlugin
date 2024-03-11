@@ -16,11 +16,6 @@ public class OverlayGUI extends JFrame {
     public OverlayGUI() {
         this.setContentPane(panel1);
         this.setTitle("EyeSee Overlay");
-        try {
-            UIManager.setLookAndFeel(new MetalLookAndFeel());
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
         this.setUndecorated(true);
 //        this.setOpacity(0.5f);
         this.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.0f));

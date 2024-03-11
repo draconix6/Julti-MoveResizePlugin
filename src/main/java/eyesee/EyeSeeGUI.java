@@ -34,7 +34,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
     private static final Robot ROBOT;
     private static final WinDef.DWORD SRCCOPY = new WinDef.DWORD(0x00CC0020);
 
-    private final OverlayGUI overlay = new OverlayGUI();
+    private OverlayGUI overlay;
 
     static {
         try {
@@ -54,7 +54,6 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         super();
         addWindowListener(this);
         setResizable(false);
-//        setAlwaysOnTop(true);
         String randTitle = "Julti EyeSee " + new Random().nextInt();
         setTitle(randTitle);
         setVisible(true);
@@ -66,11 +65,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         // TODO: adjustable?
         executor.scheduleAtFixedRate(this::tick, 50_000_000, 1_000_000_000L / 30, TimeUnit.NANOSECONDS);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        overlay.setVisible(true);
-        WinDef.HWND overlayHwnd = new WinDef.HWND(HwndUtil.waitForWindow("EyeSee Overlay"));
-        HwndUtil.setHwndBorderless(overlayHwnd.getPointer());
-        overlay.setVisible(false);
+        setVisible(false);
     }
 
     public static EyeSeeGUI getGUI(boolean reload) {
@@ -86,9 +81,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
     private void tick() {
         if (!currentlyShowing) return;
 
-        if (sourceHwnd == null) {
-            sourceHwnd = new WinDef.HWND(win32.User32.INSTANCE.GetForegroundWindow());
-        }
+        if (sourceHwnd == null) return;
         Rectangle rectangle = getYoinkArea(sourceHwnd);
         WinDef.HDC sourceHDC = win32.User32.INSTANCE.GetDC(sourceHwnd);
         WinDef.HDC eyeSeeHDC = win32.User32.INSTANCE.GetDC(eyeSeeHwnd);
@@ -116,7 +109,10 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
     public void showEyeSee(Rectangle zoomRect) {
         System.out.println("Showing EyeSee...");
+        if (sourceHwnd == null) sourceHwnd = new WinDef.HWND(win32.User32.INSTANCE.GetForegroundWindow());
         currentlyShowing = true;
+        setVisible(true);
+        setAlwaysOnTop(true);
 
         // TODO: readd manual setting of these values later !
         // credit to priffin for these calculations
@@ -135,6 +131,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         int projectorXPos = 0;
         int projectorYPos = (monitor.height - projectorHeight) / 2;
 
+        // move eyesee window
         User32.INSTANCE.SetWindowPos(
                 eyeSeeHwnd.getPointer(),
                 new WinDef.HWND(new Pointer(0)).getPointer(),
@@ -145,21 +142,28 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
                 new WinDef.UINT(0x0400)
         );
 
-        overlay.setVisible(true);
+        this.overlay = new OverlayGUI();
+        this.overlay.setVisible(true);
+        this.overlay.setAlwaysOnTop(true);
+        WinDef.HWND overlayHwnd = new WinDef.HWND(HwndUtil.waitForWindow("EyeSee Overlay"));
+        HwndUtil.setHwndBorderless(overlayHwnd.getPointer());
 
-        Image image = overlay.icon.getImage();
+        // add overlay image & resize accordingly
+        Image image = this.overlay.icon.getImage();
         Image newImage = image.getScaledInstance(projectorWidth, projectorHeight, Image.SCALE_SMOOTH);
-        overlay.icon = new ImageIcon(newImage);
-        overlay.label1 = new JLabel(overlay.icon);
-        overlay.add(overlay.label1);
+        this.overlay.icon = new ImageIcon(newImage);
+        this.overlay.label1 = new JLabel(this.overlay.icon);
+        this.overlay.add(this.overlay.label1);
 
-        overlay.setSize(projectorWidth, projectorHeight);
-        overlay.setLocation(projectorXPos, projectorYPos);
+        this.overlay.setSize(projectorWidth, projectorHeight);
+        this.overlay.setLocation(projectorXPos, projectorYPos);
     }
 
     public void hideEyeSee() {
         System.out.println("Hiding EyeSee...");
         currentlyShowing = false;
+        setVisible(false);
+
         MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
         User32.INSTANCE.SetWindowPos(
                 eyeSeeHwnd.getPointer(),
@@ -171,7 +175,8 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
                 new WinDef.UINT(0x0400)
         );
 
-        overlay.setVisible(false);
+        if (this.overlay == null) return;
+        this.overlay.setVisible(false);
     }
 
     @Override

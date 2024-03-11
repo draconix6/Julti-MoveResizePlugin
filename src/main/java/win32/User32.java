@@ -71,6 +71,7 @@ public interface User32 extends StdCallLibrary {
     BOOL GetCursorInfo(CURSORINFO pci);
 
     BOOL GetCursorPos(POINT point);
+    BOOL SystemParametersInfoA(int uiAction, int uiParam, int pvParam, int fWinIni);
 
     interface WNDENUMPROC extends StdCallCallback {
         boolean callback(Pointer hWnd, Pointer arg);

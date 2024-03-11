@@ -5,6 +5,7 @@ import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.command.CommandManager;
 import xyz.duncanruns.julti.plugin.PluginEvents;
 
+import java.awt.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class InitPlugin {
@@ -15,5 +16,6 @@ public class InitPlugin {
         });
 
         CommandManager.getMainManager().registerCommand(new ResizeCommand());
+        CommandManager.getMainManager().registerCommand(new CursorSpeedCommand());
     }
 }

@@ -20,7 +20,8 @@ public class ResizeCommand extends Command {
 
     @Override
     public String helpDescription() {
-        return "resize [width] [height] - Resizes the window of the active instance to the specified size - if window is already resized, revert to the playing window size.";
+        return "resize [width] [height] - Resizes the window of the active instance to the specified size - if window is already resized, revert to the playing window size.\n" +
+                "resize [width] [height] zoom - Same as above, but also generates a window with an overlay to assist with eye measurements (i.e. Priffin Mag projector)";
     }
 
     @Override
@@ -30,7 +31,7 @@ public class ResizeCommand extends Command {
 
     @Override
     public int getMaxArgs() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -42,7 +43,7 @@ public class ResizeCommand extends Command {
     public void run(String[] args, CancelRequester cancelRequester) {
         MinecraftInstance activeInstance = InstanceManager.getInstanceManager().getSelectedInstance();
         if (activeInstance == null) {
-            throw new CommandFailedException("Instance is not active, cannot resize.");
+            throw new CommandFailedException("Instance is not active, cannot resize - please add the command as a script and assign a hotkey to it as per the instructions on the GitHub.");
         }
 
         JultiOptions options = JultiOptions.getJultiOptions();
@@ -61,11 +62,13 @@ public class ResizeCommand extends Command {
             boundsToSet = WindowStateUtil.withTopLeftToCenter(boundsToSet);
         }
 
-        if (!MoveResizePlugin.gui.isShowing()) {
-            MoveResizePlugin.gui.showEyeSee(boundsToSet);
-        }
-        else {
-            MoveResizePlugin.gui.hideEyeSee();
+        // eyesee
+        if (args.length > 2 && args[2].equals("zoom")) {
+            if (!MoveResizePlugin.gui.isShowing()) {
+                MoveResizePlugin.gui.showEyeSee(boundsToSet);
+            } else {
+                MoveResizePlugin.gui.hideEyeSee();
+            }
         }
 
         if (!stretching) {
