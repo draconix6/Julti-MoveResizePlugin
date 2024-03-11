@@ -42,7 +42,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         setVisible(true);
         eyeSeeHwnd = new WinDef.HWND(Native.getWindowPointer(this));
         setTitle("Julti EyeSee");
-        this.setUndecorated(true);
+        WindowStateUtil.setHwndBorderless(eyeSeeHwnd);
         tick();
         // 30 = refresh rate
         // TODO: adjustable?
@@ -118,7 +118,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         this.overlay = new OverlayGUI();
         this.overlay.setVisible(true);
         this.overlay.setAlwaysOnTop(true);
-        overlay.setUndecorated(true);
+        WindowStateUtil.setHwndBorderless(new WinDef.HWND(Native.getWindowPointer(overlay)));
 
         // add overlay image & resize accordingly
         Image image = this.overlay.icon.getImage();
