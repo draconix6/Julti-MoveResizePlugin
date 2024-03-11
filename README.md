@@ -50,4 +50,4 @@ Only resizing the active instance is currently supported, therefore all resize s
 
 A list of commands to use in scripts can be seen by typing `help` in the Julti command line.
 
-Credits to Priffin for TallMacro/EyeZoom.
+Credits to Priffin for TallMacro/EyeZoom, and Duncan for EyeSee.
