@@ -1,10 +1,8 @@
-package me.draconix6.moveresizeplugin;
+package me.draconix6.moveresizeplugin.command;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
-import eyesee.EyeSeeGUI;
-import org.apache.logging.log4j.Level;
-import xyz.duncanruns.julti.Julti;
+import me.draconix6.moveresizeplugin.MoveResizePlugin;
 import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.cancelrequester.CancelRequester;
 import xyz.duncanruns.julti.command.Command;
@@ -62,7 +60,7 @@ public class ResizeCommand extends Command {
             boundsToSet = WindowStateUtil.withTopLeftToCenter(boundsToSet);
         }
 
-        // eyesee
+        // xyz.duncanruns.eyesee
         if (args.length > 2 && args[2].equals("zoom")) {
             if (!MoveResizePlugin.gui.isShowing()) {
                 MoveResizePlugin.gui.showEyeSee(boundsToSet);

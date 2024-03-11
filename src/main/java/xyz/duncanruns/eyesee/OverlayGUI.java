@@ -1,10 +1,6 @@
-package eyesee;
-
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
+package xyz.duncanruns.eyesee;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.awt.*;
 
 public class OverlayGUI extends JFrame {

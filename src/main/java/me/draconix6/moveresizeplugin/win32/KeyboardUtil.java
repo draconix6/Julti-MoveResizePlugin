@@ -1,4 +1,4 @@
-package win32;
+package me.draconix6.moveresizeplugin.win32;
 
 import com.google.common.collect.Lists;
 import com.sun.jna.Pointer;
@@ -16,11 +16,11 @@ import java.util.*;
  */
 public final class KeyboardUtil {
 
-    public static final List<Integer> ALL_MODIFIERS = Arrays.asList(win32.Win32Con.VK_CONTROL, win32.Win32Con.VK_LCONTROL, win32.Win32Con.VK_RCONTROL, win32.Win32Con.VK_SHIFT, win32.Win32Con.VK_LSHIFT, win32.Win32Con.VK_RSHIFT, win32.Win32Con.VK_MENU, win32.Win32Con.VK_LMENU, win32.Win32Con.VK_RMENU, win32.Win32Con.VK_F3);
+    public static final List<Integer> ALL_MODIFIERS = Arrays.asList(me.draconix6.moveresizeplugin.win32.Win32Con.VK_CONTROL, me.draconix6.moveresizeplugin.win32.Win32Con.VK_LCONTROL, me.draconix6.moveresizeplugin.win32.Win32Con.VK_RCONTROL, me.draconix6.moveresizeplugin.win32.Win32Con.VK_SHIFT, me.draconix6.moveresizeplugin.win32.Win32Con.VK_LSHIFT, me.draconix6.moveresizeplugin.win32.Win32Con.VK_RSHIFT, me.draconix6.moveresizeplugin.win32.Win32Con.VK_MENU, me.draconix6.moveresizeplugin.win32.Win32Con.VK_LMENU, me.draconix6.moveresizeplugin.win32.Win32Con.VK_RMENU, me.draconix6.moveresizeplugin.win32.Win32Con.VK_F3);
     // Modifier keys which capture multiple keys
-    public static final List<Integer> BROAD_MODIFIERS = Arrays.asList(win32.Win32Con.VK_CONTROL, win32.Win32Con.VK_SHIFT, win32.Win32Con.VK_MENU);
+    public static final List<Integer> BROAD_MODIFIERS = Arrays.asList(me.draconix6.moveresizeplugin.win32.Win32Con.VK_CONTROL, me.draconix6.moveresizeplugin.win32.Win32Con.VK_SHIFT, me.draconix6.moveresizeplugin.win32.Win32Con.VK_MENU);
     // Modifier keys which reference only single keys
-    public static final List<Integer> SINGLE_MODIFIERS = Arrays.asList(win32.Win32Con.VK_LCONTROL, win32.Win32Con.VK_RCONTROL, win32.Win32Con.VK_LSHIFT, win32.Win32Con.VK_RSHIFT, win32.Win32Con.VK_LMENU, win32.Win32Con.VK_RMENU, win32.Win32Con.VK_F3);
+    public static final List<Integer> SINGLE_MODIFIERS = Arrays.asList(me.draconix6.moveresizeplugin.win32.Win32Con.VK_LCONTROL, me.draconix6.moveresizeplugin.win32.Win32Con.VK_RCONTROL, me.draconix6.moveresizeplugin.win32.Win32Con.VK_LSHIFT, me.draconix6.moveresizeplugin.win32.Win32Con.VK_RSHIFT, me.draconix6.moveresizeplugin.win32.Win32Con.VK_LMENU, me.draconix6.moveresizeplugin.win32.Win32Con.VK_RMENU, me.draconix6.moveresizeplugin.win32.Win32Con.VK_F3);
     private static final String[] KEY_NAMES = getKeyNamesArray();
     //assume a single hotkey
     private static boolean wasDown = false;
@@ -214,19 +214,19 @@ public final class KeyboardUtil {
         int scanCode = User32.INSTANCE.MapVirtualKeyA(new WinDef.UINT(virtualKey), new WinDef.UINT(0)).intValue();
         boolean isExtended = false;
         switch (virtualKey) {
-            case win32.Win32Con.VK_RMENU:
-            case win32.Win32Con.VK_RCONTROL:
-            case win32.Win32Con.VK_LEFT:
-            case win32.Win32Con.VK_UP:
-            case win32.Win32Con.VK_RIGHT:
-            case win32.Win32Con.VK_DOWN:
-            case win32.Win32Con.VK_PRIOR:
-            case win32.Win32Con.VK_NEXT:
-            case win32.Win32Con.VK_END:
-            case win32.Win32Con.VK_HOME:
-            case win32.Win32Con.VK_INSERT:
-            case win32.Win32Con.VK_DELETE:
-            case win32.Win32Con.VK_DIVIDE:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_RMENU:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_RCONTROL:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_LEFT:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_UP:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_RIGHT:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_DOWN:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_PRIOR:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_NEXT:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_END:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_HOME:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_INSERT:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_DELETE:
+            case me.draconix6.moveresizeplugin.win32.Win32Con.VK_DIVIDE:
             case Win32Con.VK_NUMLOCK:
                 isExtended = true;
                 break;

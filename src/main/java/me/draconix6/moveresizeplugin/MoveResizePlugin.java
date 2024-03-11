@@ -2,14 +2,12 @@ package me.draconix6.moveresizeplugin;
 
 import com.google.common.io.Resources;
 import org.apache.logging.log4j.Level;
-import eyesee.EyeSeeGUI;
-import win32.HwndUtil;
+import xyz.duncanruns.eyesee.EyeSeeGUI;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.JultiAppLaunch;
 import xyz.duncanruns.julti.gui.JultiGUI;
 import xyz.duncanruns.julti.plugin.PluginInitializer;
 import xyz.duncanruns.julti.plugin.PluginManager;
-import xyz.duncanruns.julti.util.WindowStateUtil;
 
 import javax.swing.*;
 import java.io.IOException;

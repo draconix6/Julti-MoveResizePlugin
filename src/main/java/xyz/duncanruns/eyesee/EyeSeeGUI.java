@@ -1,24 +1,18 @@
-package eyesee;
+package xyz.duncanruns.eyesee;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.Level;
-import win32.KeyboardUtil;
-import win32.User32;
-import win32.GDI32Extra;
-import win32.HwndUtil;
+import me.draconix6.moveresizeplugin.win32.User32;
+import me.draconix6.moveresizeplugin.win32.GDI32Extra;
+import me.draconix6.moveresizeplugin.win32.HwndUtil;
 import xyz.duncanruns.julti.Julti;
-import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.util.MonitorUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.geom.AffineTransform;
-import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -83,15 +77,15 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
         if (sourceHwnd == null) return;
         Rectangle rectangle = getYoinkArea(sourceHwnd);
-        WinDef.HDC sourceHDC = win32.User32.INSTANCE.GetDC(sourceHwnd);
-        WinDef.HDC eyeSeeHDC = win32.User32.INSTANCE.GetDC(eyeSeeHwnd);
+        WinDef.HDC sourceHDC = me.draconix6.moveresizeplugin.win32.User32.INSTANCE.GetDC(sourceHwnd);
+        WinDef.HDC eyeSeeHDC = me.draconix6.moveresizeplugin.win32.User32.INSTANCE.GetDC(eyeSeeHwnd);
 
         GDI32Extra.INSTANCE.SetStretchBltMode(eyeSeeHDC, 3);
 
         GDI32Extra.INSTANCE.StretchBlt(eyeSeeHDC, 0, 0, bounds.width, bounds.height, sourceHDC, rectangle.x, rectangle.y, rectangle.width, rectangle.height, SRCCOPY);
 
 //        Image logo = Toolkit.getDefaultToolkit().getImage(JultiOptions.getJultiDir().resolve("overlay.png").toString());
-//        WinDef.HDC overlayHDC = win32.User32.INSTANCE.
+//        WinDef.HDC overlayHDC = me.draconix6.moveresizeplugin.win32.User32.INSTANCE.
 
 //        JPanel pane = new JPanel() {
 //            @Override
@@ -109,7 +103,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
     public void showEyeSee(Rectangle zoomRect) {
         System.out.println("Showing EyeSee...");
-        if (sourceHwnd == null) sourceHwnd = new WinDef.HWND(win32.User32.INSTANCE.GetForegroundWindow());
+        if (sourceHwnd == null) sourceHwnd = new WinDef.HWND(me.draconix6.moveresizeplugin.win32.User32.INSTANCE.GetForegroundWindow());
         currentlyShowing = true;
         setVisible(true);
         setAlwaysOnTop(true);
@@ -131,7 +125,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         int projectorXPos = 0;
         int projectorYPos = (monitor.height - projectorHeight) / 2;
 
-        // move eyesee window
+        // move xyz.duncanruns.eyesee window
         User32.INSTANCE.SetWindowPos(
                 eyeSeeHwnd.getPointer(),
                 new WinDef.HWND(new Pointer(0)).getPointer(),

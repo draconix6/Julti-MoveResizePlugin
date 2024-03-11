@@ -1,4 +1,4 @@
-package eyesee;
+package xyz.duncanruns.eyesee;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,7 +32,7 @@ public class EyeSeeOptions {
 
     private static EyeSeeOptions load() {
         try {
-            return fromString(eyesee.FileUtil.readString(getOptionsPath()));
+            return fromString(xyz.duncanruns.eyesee.FileUtil.readString(getOptionsPath()));
         } catch (Exception ignored) {
             return new EyeSeeOptions();
         }

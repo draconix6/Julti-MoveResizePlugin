@@ -1,12 +1,11 @@
 package me.draconix6.moveresizeplugin;
 
+import me.draconix6.moveresizeplugin.command.CursorSpeedCommand;
+import me.draconix6.moveresizeplugin.command.ResizeCommand;
 import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.command.CommandManager;
 import xyz.duncanruns.julti.plugin.PluginEvents;
-
-import java.awt.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class InitPlugin {
     public static void init() {

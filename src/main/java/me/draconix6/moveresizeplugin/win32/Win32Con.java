@@ -1,4 +1,4 @@
-package win32;
+package me.draconix6.moveresizeplugin.win32;
 
 /**
  * @author DuncanRuns

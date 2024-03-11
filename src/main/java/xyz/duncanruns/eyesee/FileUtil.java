@@ -1,4 +1,4 @@
-package eyesee;
+package xyz.duncanruns.eyesee;
 
 import java.io.FileWriter;
 import java.io.IOException;
