@@ -14,7 +14,6 @@ import com.sun.jna.win32.W32APIOptions;
  * @Author Lxnus & DuncanRuns
  */
 public interface GDI32Extra extends GDI32 {
-
     GDI32Extra INSTANCE = Native.load("gdi32", GDI32Extra.class, W32APIOptions.DEFAULT_OPTIONS);
 
     boolean StretchBlt(HDC hdcDest, int xDest, int yDest, int wDest, int hDest, HDC hdcSrc, int xSrc, int ySrc, int wSrc, int hSrc, DWORD rop);
