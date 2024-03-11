@@ -2,7 +2,7 @@ package me.draconix6.moveresizeplugin;
 
 import com.google.common.io.Resources;
 import org.apache.logging.log4j.Level;
-import xyz.duncanruns.eyesee.EyeSeeGUI;
+import me.draconix6.moveresizeplugin.gui.EyeSeeGUI;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.JultiAppLaunch;
 import xyz.duncanruns.julti.gui.JultiGUI;

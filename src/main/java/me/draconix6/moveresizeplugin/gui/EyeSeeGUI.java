@@ -1,4 +1,4 @@
-package xyz.duncanruns.eyesee;
+package me.draconix6.moveresizeplugin.gui;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;

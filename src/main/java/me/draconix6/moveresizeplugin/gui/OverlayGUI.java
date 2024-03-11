@@ -1,4 +1,4 @@
-package xyz.duncanruns.eyesee;
+package me.draconix6.moveresizeplugin.gui;
 
 import javax.swing.*;
 import java.awt.*;
