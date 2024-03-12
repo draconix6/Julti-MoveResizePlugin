@@ -30,7 +30,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
     private WinDef.HWND sourceHwnd;
     private final WinDef.HWND eyeSeeHwnd;
     private boolean currentlyShowing = false;
-    private final Rectangle bounds = new Rectangle(0, 0, 0, 0);
+    private final Rectangle bounds = new Rectangle();
 
     public EyeSeeGUI() {
         super();
@@ -89,7 +89,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         int projectorXPos = 0;
         int projectorYPos = (monitor.height - projectorHeight) / 2;
 
-        // move xyz.duncanruns.eyesee window
+        // move eyesee window
         User32.INSTANCE.SetWindowPos(
                 eyeSeeHwnd,
                 new WinDef.HWND(new Pointer(0)),
@@ -103,7 +103,6 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 //        this.overlay = new OverlayGUI();
         this.overlay.setVisible(true);
         this.overlay.setAlwaysOnTop(true);
-        WindowStateUtil.setHwndBorderless(new WinDef.HWND(Native.getWindowPointer(overlay)));
 
         // add overlay image & resize accordingly
         if (!MoveResizePlugin.prevWindowSize.equals(zoomRect)) {

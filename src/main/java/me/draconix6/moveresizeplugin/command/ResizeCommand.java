@@ -60,7 +60,7 @@ public class ResizeCommand extends Command {
             boundsToSet = WindowStateUtil.withTopLeftToCenter(boundsToSet);
         }
 
-        // xyz.duncanruns.eyesee
+        // eyesee
         if (args.length > 2 && args[2].equals("zoom")) {
             if (!MoveResizePlugin.getESGui().isShowing()) {
                 MoveResizePlugin.getESGui().showEyeSee(boundsToSet);
@@ -87,6 +87,5 @@ public class ResizeCommand extends Command {
                 boundsToSet.height,
                 new WinDef.UINT(0x0400)
         );
-//        Julti.waitForExecute(() -> DoAllFastUtil.doAllFast(toReset, instance -> ResetHelper.getManager().resetInstance(instance)));
     }
 }

@@ -22,7 +22,6 @@ public class MoveResizePlugin implements PluginInitializer {
     public static int winStyle = 0;
     public static Rectangle prevWindowSize = new Rectangle();
     public static int prevCursorSpeed = 0;
-    public static boolean changedCursorSpeed = false;
     private static EyeSeeGUI gui = null;
 
     public static void main(String[] args) throws IOException {
