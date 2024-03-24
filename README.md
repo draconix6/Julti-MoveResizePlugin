@@ -5,14 +5,14 @@ Download the latest release, and place it in %UserProfile%/.Julti/plugins. Resta
 
 In Julti, go to Scripts > Import Script. The plugin currently implements two commands:
 
-- `resize <width> <height> [zoom]` - Resizes the active instance to the given width & height - append `zoom` to the command for a magnifier window to help with eye measurements (i.e. Priffin Mag OBS projector). Example:
+- `resize <width> <height> [zoom]` - Resizes the active instance to the given width & height - append `zoom` to the command for a standalone magnifier window to help with eye measurements (i.e. Priffin Mag OBS projector). Example:
 ![image](https://github.com/draconix6/Julti-MoveResizePlugin/assets/30545768/0f8d03e7-0303-4fc0-8a7a-44166bd0c18e)
-- `cursorspeed <speed1> <speed2>` - Changes the Windows cursor speed to speed1, then back to speed2 when activated again. Can be useful for eye measurements.
+- `cursorspeed <speed>` - Changes the Windows cursor speed to the given speed, then back to the original speed when activated again. Can be useful for eye measurements.
 
 
 Use this general template for importing resize scripts: `Name;1;resize <width> <height> [zoom]`.
 
-Use this general template for importing resize scripts with cursor speed changes: `Name;1;resize <width> <height> [zoom];cursorspeed <speed1> <speed2>`.
+Use this general template for importing resize scripts with cursor speed changes: `Name;1;resize <width> <height> [zoom];cursorspeed <speed>`.
 
 After creating your script, go to Julti Options > Hotkeys. Any hotkeyable scripts will be available at the bottom here:
 ![image](https://github.com/draconix6/Julti-MoveResizePlugin/assets/30545768/cdc5a5c1-51f6-48f2-894a-212fb4a75c64)
