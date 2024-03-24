@@ -63,7 +63,7 @@ public class ResizeCommand extends Command {
         // eyesee
         if (args.length > 2 && args[2].equals("zoom")) {
             if (!MoveResizePlugin.getESGui().isShowing()) {
-                MoveResizePlugin.getESGui().showEyeSee(boundsToSet);
+                MoveResizePlugin.getESGui().showEyeSee(boundsToSet, activeInstance);
             } else {
                 MoveResizePlugin.getESGui().hideEyeSee();
             }

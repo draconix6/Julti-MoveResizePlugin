@@ -7,6 +7,7 @@ import me.draconix6.moveresizeplugin.MoveResizePlugin;
 import me.draconix6.moveresizeplugin.win32.GDI32Extra;
 import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
+import xyz.duncanruns.julti.instance.MinecraftInstance;
 import xyz.duncanruns.julti.util.MonitorUtil;
 import xyz.duncanruns.julti.util.WindowStateUtil;
 import xyz.duncanruns.julti.win32.User32;
@@ -65,9 +66,10 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         GDI32Extra.INSTANCE.StretchBlt(eyeSeeHDC, 0, 0, bounds.width, bounds.height, sourceHDC, rectangle.x, rectangle.y, rectangle.width, rectangle.height, SRCCOPY);
     }
 
-    public void showEyeSee(Rectangle zoomRect) {
+    public void showEyeSee(Rectangle zoomRect, MinecraftInstance inst) {
         System.out.println("Showing EyeSee...");
-        sourceHwnd = User32.INSTANCE.GetForegroundWindow();
+        sourceHwnd = inst.getHwnd();
+//        sourceHwnd = User32.INSTANCE.GetForegroundWindow();
         currentlyShowing = true;
         setVisible(true);
         setAlwaysOnTop(true);
