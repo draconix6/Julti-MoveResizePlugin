@@ -1,7 +1,7 @@
 Plugin for [Julti](https://github.com/duncanruns/julti) which allows for moving & resizing instances.
 
 Usage:
-Download the latest release, and place it in %UserProfile%/.Julti/plugins. Restart Julti if you had it open.
+[Download the latest release](https://github.com/draconix6/Julti-MoveResizePlugin/releases/latest), and place it in %UserProfile%/.Julti/plugins. Restart Julti if you had it open.
 
 In Julti, go to Scripts > Import Script. The plugin currently implements two commands:
 
