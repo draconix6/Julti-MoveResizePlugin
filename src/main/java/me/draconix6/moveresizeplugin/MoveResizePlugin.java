@@ -41,6 +41,8 @@ public class MoveResizePlugin implements PluginInitializer {
             Julti.log(Level.INFO, "Move & Resize Plugin Reloaded!");
         });
 
+        getESGui();
+
         CommandManager.getMainManager().registerCommand(new ResizeCommand());
         CommandManager.getMainManager().registerCommand(new CursorSpeedCommand());
         Julti.log(Level.INFO, "Move & Resize Plugin Initialized");

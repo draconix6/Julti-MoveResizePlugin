@@ -39,6 +39,8 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         this.setResizable(false);
         this.setTitle("Julti EyeSee");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setAlwaysOnTop(true);
+        this.overlay.setAlwaysOnTop(true);
 
         // set borderless
         this.setVisible(true);
@@ -49,7 +51,9 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         // 30 = refresh rate
         // TODO: adjustable?
         this.executor.scheduleAtFixedRate(this::tick, 50_000_000, 1_000_000_000L / 30, TimeUnit.NANOSECONDS);
-        this.setVisible(false);
+//        this.setVisible(false);
+
+//        this.showEyeSee();
     }
 
     private void tick() {
@@ -66,18 +70,20 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         GDI32Extra.INSTANCE.StretchBlt(eyeSeeHDC, 0, 0, bounds.width, bounds.height, sourceHDC, rectangle.x, rectangle.y, rectangle.width, rectangle.height, SRCCOPY);
     }
 
-    public void showEyeSee(Rectangle zoomRect, MinecraftInstance inst) {
-        System.out.println("Showing EyeSee...");
-        sourceHwnd = inst.getHwnd();
+    public void showEyeSee(Rectangle zoomRect, WinDef.HWND inst) {
+        Julti.log(Level.DEBUG, "Showing EyeSee...");
+        sourceHwnd = inst;
 //        sourceHwnd = User32.INSTANCE.GetForegroundWindow();
         currentlyShowing = true;
         setVisible(true);
-        setAlwaysOnTop(true);
 
         // TODO: readd manual setting of these values later !
         // credit to priffin for these calculations
         MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
-        int projectorWidth = (monitor.width - zoomRect.width) / 2;
+        // temp fix to incorrect MonitorUtil
+        DisplayMode dm = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
+        int projectorWidth = (dm.getWidth() - zoomRect.width) / 2;
+        Julti.log(Level.INFO, Integer.toString(projectorWidth));
         int projectorHeight = (int) (projectorWidth / (16.0f / 9.0f)); // this was weird, just sticking to 16:9
 
         if (projectorWidth == 0 || projectorHeight == 0) {
@@ -89,7 +95,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         this.bounds.height = projectorHeight;
 
         int projectorXPos = 0;
-        int projectorYPos = (monitor.height - projectorHeight) / 2;
+        int projectorYPos = (dm.getHeight() - projectorHeight) / 2;
 
         // move eyesee window
         User32.INSTANCE.SetWindowPos(
@@ -103,8 +109,16 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         );
 
 //        this.overlay = new OverlayGUI();
-        this.overlay.setVisible(true);
-        this.overlay.setAlwaysOnTop(true);
+//        this.overlay.setVisible(true);
+//        User32.INSTANCE.SetWindowPos(
+//                this.overlay.hwnd,
+//                new WinDef.HWND(new Pointer(0)),
+//                projectorXPos,
+//                projectorYPos,
+//                projectorWidth,
+//                projectorHeight,
+//                0x0400
+//        );
 
         // add overlay image & resize accordingly
         if (!MoveResizePlugin.prevWindowSize.equals(zoomRect)) {
@@ -119,12 +133,13 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
         this.overlay.setSize(projectorWidth, projectorHeight);
         this.overlay.setLocation(projectorXPos, projectorYPos);
+        User32.INSTANCE.BringWindowToTop(this.overlay.hwnd);
     }
 
     public void hideEyeSee() {
-        System.out.println("Hiding EyeSee...");
+        Julti.log(Level.DEBUG, "Hiding EyeSee...");
         currentlyShowing = false;
-        setVisible(false);
+//        setVisible(false);
 
         MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
         User32.INSTANCE.SetWindowPos(
@@ -138,7 +153,18 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         );
 
         if (this.overlay == null) return;
-        this.overlay.setVisible(false);
+        this.overlay.setSize(1, 1);
+        this.overlay.setLocation(0, -monitor.height);
+//        User32.INSTANCE.SetWindowPos(
+//                overlay.hwnd,
+//                new WinDef.HWND(new Pointer(0)),
+//                0,
+//                -monitor.height,
+//                1,
+//                1,
+//                0x0400
+//        );
+//        this.overlay.setVisible(false);
     }
 
     @Override
