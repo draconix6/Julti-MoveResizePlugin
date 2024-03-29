@@ -7,7 +7,7 @@ In Julti, go to Scripts > Import Script. Paste in one of the scrips below, depen
 
 TallMacro/EyeZoom (More accurate eye measurements): `Tall Window;1;resize 1920 3500`
 
-Pixel Perfect/BoatEye measurements: `Pixel Perfect;1;resize 384 16384 zoom`
+Pixel Perfect/BoatEye measurements, with a separate magnifier/overlay window & sensitivity change: `Pixel Perfect;1;resize 384 16384 zoom;cursorspeed 1`
 
 Thin BT/TikTok BT: `Thin BT;1;resize 250 700`
 
