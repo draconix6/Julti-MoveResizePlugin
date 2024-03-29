@@ -3,33 +3,34 @@ Plugin for [Julti](https://github.com/duncanruns/julti) which allows for moving 
 Usage:
 [Download the latest release](https://github.com/draconix6/Julti-MoveResizePlugin/releases/latest), and place it in %UserProfile%/.Julti/plugins. Restart Julti if you had it open.
 
-In Julti, go to Scripts > Import Script. The plugin currently implements two commands:
+In Julti, go to Scripts > Import Script. Paste in one of the scrips below, depending on what you're looking to set up:
+
+TallMacro/EyeZoom (More accurate eye measurements): `Tall Window;1;resize 1920 3500`
+
+Pixel Perfect/BoatEye measurements: `Pixel Perfect;1;resize 384 16384 zoom`
+
+Thin BT/TikTok BT: `Thin BT;1;resize 250 700`
+
+Planar fog abuse/WideHardo: `Planar Fog;1;resize 1920 300`
+
+After creating your script, go to Julti Options > Hotkeys. Any hotkeyable scripts will be available at the bottom here:
+![image](https://github.com/draconix6/Julti-MoveResizePlugin/assets/30545768/cdc5a5c1-51f6-48f2-894a-212fb4a75c64)
+
+If a resize is active, pressing the same hotkey again will revert the window back to its original position.
+
+**If your window doesn't appear in the expected position when resizing**, go to Julti Options > Window and ensure Window Pos Is Center is checked, and Window Position is set to the center of your monitor.
+
+### Please note, according to speedrun.com/mc rules, only one out of bounds resolution may be used in any given run.
+
+More info on the commands the plugin adds:
 
 - `resize <width> <height> [zoom]` - Resizes the active instance to the given width & height - append `zoom` to the command for a standalone magnifier window to help with eye measurements (i.e. Priffin Mag OBS projector). Example:
 ![image](https://github.com/draconix6/Julti-MoveResizePlugin/assets/30545768/0f8d03e7-0303-4fc0-8a7a-44166bd0c18e)
 - `cursorspeed <speed>` - Changes the Windows cursor speed to the given speed, then back to the original speed when activated again. Can be useful for eye measurements.
 
-
 Use this general template for importing resize scripts: `Name;1;resize <width> <height> [zoom]`.
 
 Use this general template for importing resize scripts with cursor speed changes: `Name;1;resize <width> <height> [zoom];cursorspeed <speed>`.
-
-After creating your script, go to Julti Options > Hotkeys. Any hotkeyable scripts will be available at the bottom here:
-![image](https://github.com/draconix6/Julti-MoveResizePlugin/assets/30545768/cdc5a5c1-51f6-48f2-894a-212fb4a75c64)
-
-An example script to resize the game for more accurate eye measurements: `Tall Window;1;resize 1920 3500`
-
-An example script to resize the game for pixel perfect (boat eye) measurements: `Pixel Perfect;1;resize 384 16384 zoom`
-
-An example script to resize the game for thin BT/tiktok BT: `Thin BT;1;resize 250 700`
-
-An example script to resize the game for planar fog abuse: `Planar Fog;1;resize 1920 300`
-
-If a resize is active, pressing the same hotkey again will revert the window back to its original position.
-
-### Please note, according to speedrun.com/mc rules, only one out of bounds resolution may be used in any given run.
-
-If your window doesn't appear in the expected position when resizing, go to Julti Options > Window and ensure Window Pos Is Center is checked, and Window Position is set to the center of your monitor.
 
 More info on Julti scripts:
 
