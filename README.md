@@ -14,6 +14,7 @@ Thin BT/TikTok BT: `Thin BT;1;resize 250 700`
 Planar fog abuse/WideHardo: `Planar Fog;1;resize 1920 300`
 
 After creating your script, go to Julti Options > Hotkeys. Any hotkeyable scripts will be available at the bottom here:
+
 ![image](https://github.com/draconix6/Julti-MoveResizePlugin/assets/30545768/cdc5a5c1-51f6-48f2-894a-212fb4a75c64)
 
 If a resize is active, pressing the same hotkey again will revert the window back to its original position.
