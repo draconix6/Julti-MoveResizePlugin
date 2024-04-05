@@ -12,9 +12,9 @@ public class CursorSpeedCommand extends Command {
 
     @Override
     public String helpDescription() {
-//        return "cursorspeed [speed] - Changes the Windows cursor speed. Saves the previous cursor speed to toggle back.\n" +
-//                "cursorspeed [speed] [initialspeed] - Same as above, but doesn't save the previous speed in favour of reverting to the given initialspeed value.";
-        return "cursorspeed [speed1] [speed2] - Changes the Windows cursor speed between the given values.";
+        return "cursorspeed [speed] - Changes the Windows cursor speed. Saves the previous cursor speed to toggle back.\n" +
+                "cursorspeed [speed] [initialspeed] - Same as above, but doesn't save the previous speed in favour of reverting to the given initialspeed value.";
+//        return "cursorspeed [speed1] [speed2] - Changes the Windows cursor speed between the given values.";
     }
 
     @Override
