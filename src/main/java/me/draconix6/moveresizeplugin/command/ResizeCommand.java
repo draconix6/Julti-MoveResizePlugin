@@ -53,6 +53,7 @@ public class ResizeCommand extends Command {
         WinDef.HWND mcHwnd = activeInstance.getHwnd();
 
         boolean stretching = true;
+        boolean zooming = args.length > 2 && args[2].equals("zoom");
 
         Rectangle currentBounds = WindowStateUtil.getHwndRectangle(mcHwnd);
         Rectangle boundsToSet = new Rectangle(options.windowPos[0], options.windowPos[1], Integer.parseInt(args[0]), Integer.parseInt(args[1]));
@@ -66,20 +67,30 @@ public class ResizeCommand extends Command {
         }
 
         // eyesee
+//        if (args.length > 2 && args[2].equals("zoom")) {
+//            EyeSeeGUI gui = MoveResizePlugin.getESGui();
+//            if (!gui.isShowing()) {
+//                gui.showEyeSee(boundsToSet, activeInstance);
+//            } else {
+//                gui.hideEyeSee();
+//            }
+//        }
 
         if (!stretching) {
-            if (MoveResizePlugin.wasFullscreen) {
-                activeInstance.getKeyPresser().pressKey(GameOptionsUtil.getKey(activeInstance.getPath(), "key_key.fullscreen", false));
+            if (MoveResizePlugin.wasFullscreen && zooming) {
+                GameOptions go = activeInstance.getGameOptions();
+                activeInstance.getKeyPresser().pressKey(go.fullscreenKey);
             }
-                WindowStateUtil.setHwndStyle(mcHwnd, MoveResizePlugin.winStyle);
+            WindowStateUtil.setHwndStyle(mcHwnd, MoveResizePlugin.winStyle);
         } else {
-            MoveResizePlugin.wasFullscreen = activeInstance.isFullscreen();
-            if (MoveResizePlugin.wasFullscreen)
-            {
-                activeInstance.ensureNotFullscreen();
+            if (zooming) {
+                MoveResizePlugin.wasFullscreen = activeInstance.isFullscreen();
+                if (MoveResizePlugin.wasFullscreen) {
+                    activeInstance.ensureNotFullscreen();
+                }
             }
-                MoveResizePlugin.winStyle = WindowStateUtil.getHwndStyle(mcHwnd);
-                WindowStateUtil.setHwndBorderless(mcHwnd);
+            MoveResizePlugin.winStyle = WindowStateUtil.getHwndStyle(mcHwnd);
+            WindowStateUtil.setHwndBorderless(mcHwnd);
         }
 
         // credits to priffin/tallmacro
