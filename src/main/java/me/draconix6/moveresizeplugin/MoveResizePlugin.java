@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 
 public class MoveResizePlugin implements PluginInitializer {
     public static int winStyle = 0;
+    public static boolean wasFullscreen = false;
     public static Rectangle prevWindowSize = new Rectangle();
     public static int prevCursorSpeed = 0;
     private static EyeSeeGUI gui = null;

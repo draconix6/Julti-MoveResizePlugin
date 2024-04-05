@@ -28,17 +28,22 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
     private static final WinDef.DWORD SRCCOPY = new WinDef.DWORD(0x00CC0020);
     private final OverlayGUI overlay = new OverlayGUI();
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
     private WinDef.HWND sourceHwnd;
+    private MinecraftInstance activeInst;
+
     private final WinDef.HWND eyeSeeHwnd;
     private boolean currentlyShowing = false;
     private final Rectangle bounds = new Rectangle();
 
     public EyeSeeGUI() {
         super();
+        Julti.log(Level.INFO, "hi");
         this.addWindowListener(this);
         this.setResizable(false);
         this.setTitle("Julti EyeSee");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        this.setType(Type.UTILITY);
         this.setAlwaysOnTop(true);
         this.overlay.setAlwaysOnTop(true);
 
@@ -46,6 +51,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         this.setVisible(true);
         eyeSeeHwnd = new WinDef.HWND(Native.getWindowPointer(this));
         WindowStateUtil.setHwndBorderless(eyeSeeHwnd);
+        Julti.log(Level.INFO, "hi");
 
         tick();
         // 30 = refresh rate
@@ -58,9 +64,10 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
     private void tick() {
         if (!currentlyShowing) return;
-        if (sourceHwnd == null) return;
+        if (activeInst == null) return;
 
         // get snapshot of MC window
+        sourceHwnd = User32.INSTANCE.GetForegroundWindow(); // activeInst.getHwnd();
         Rectangle rectangle = getYoinkArea(sourceHwnd);
         WinDef.HDC sourceHDC = User32.INSTANCE.GetDC(sourceHwnd);
         WinDef.HDC eyeSeeHDC = User32.INSTANCE.GetDC(eyeSeeHwnd);
@@ -70,10 +77,9 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         GDI32Extra.INSTANCE.StretchBlt(eyeSeeHDC, 0, 0, bounds.width, bounds.height, sourceHDC, rectangle.x, rectangle.y, rectangle.width, rectangle.height, SRCCOPY);
     }
 
-    public void showEyeSee(Rectangle zoomRect, WinDef.HWND inst) {
+    public void showEyeSee(Rectangle zoomRect, MinecraftInstance inst) {
         Julti.log(Level.DEBUG, "Showing EyeSee...");
-        sourceHwnd = inst;
-//        sourceHwnd = User32.INSTANCE.GetForegroundWindow();
+        activeInst = inst;
         currentlyShowing = true;
         setVisible(true);
 
@@ -83,7 +89,6 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         // temp fix to incorrect MonitorUtil
         DisplayMode dm = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
         int projectorWidth = (dm.getWidth() - zoomRect.width) / 2;
-        Julti.log(Level.INFO, Integer.toString(projectorWidth));
         int projectorHeight = (int) (projectorWidth / (16.0f / 9.0f)); // this was weird, just sticking to 16:9
 
         if (projectorWidth == 0 || projectorHeight == 0) {
@@ -108,18 +113,6 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
                 0x0400
         );
 
-//        this.overlay = new OverlayGUI();
-//        this.overlay.setVisible(true);
-//        User32.INSTANCE.SetWindowPos(
-//                this.overlay.hwnd,
-//                new WinDef.HWND(new Pointer(0)),
-//                projectorXPos,
-//                projectorYPos,
-//                projectorWidth,
-//                projectorHeight,
-//                0x0400
-//        );
-
         // add overlay image & resize accordingly
         if (!MoveResizePlugin.prevWindowSize.equals(zoomRect)) {
             MoveResizePlugin.prevWindowSize = zoomRect;
@@ -131,15 +124,23 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
             this.overlay.add(this.overlay.label);
         }
 
-        this.overlay.setSize(projectorWidth, projectorHeight);
-        this.overlay.setLocation(projectorXPos, projectorYPos);
-        User32.INSTANCE.BringWindowToTop(this.overlay.hwnd);
+        User32.INSTANCE.SetWindowPos(
+                this.overlay.hwnd,
+                new WinDef.HWND(new Pointer(0)),
+                projectorXPos,
+                projectorYPos,
+                projectorWidth,
+                projectorHeight,
+                0x0400
+        );
+//        this.overlay.setSize(projectorWidth, projectorHeight);
+//        this.overlay.setLocation(projectorXPos, projectorYPos);
+//        User32.INSTANCE.BringWindowToTop(this.overlay.hwnd);
     }
 
     public void hideEyeSee() {
         Julti.log(Level.DEBUG, "Hiding EyeSee...");
         currentlyShowing = false;
-//        setVisible(false);
 
         MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
         User32.INSTANCE.SetWindowPos(
@@ -155,16 +156,6 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         if (this.overlay == null) return;
         this.overlay.setSize(1, 1);
         this.overlay.setLocation(0, -monitor.height);
-//        User32.INSTANCE.SetWindowPos(
-//                overlay.hwnd,
-//                new WinDef.HWND(new Pointer(0)),
-//                0,
-//                -monitor.height,
-//                1,
-//                1,
-//                0x0400
-//        );
-//        this.overlay.setVisible(false);
     }
 
     @Override

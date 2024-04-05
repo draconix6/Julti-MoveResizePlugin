@@ -29,6 +29,7 @@ public class OverlayGUI extends JFrame {
         this.setVisible(true);
 
         this.hwnd = new WinDef.HWND(Native.getWindowPointer(this));
+        User32.INSTANCE.BringWindowToTop(this.hwnd);
 
         this.icon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/overlay.png")));
         this.label = new JLabel(this.icon);

@@ -10,8 +10,10 @@ import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.cancelrequester.CancelRequester;
 import xyz.duncanruns.julti.command.Command;
 import xyz.duncanruns.julti.command.CommandFailedException;
+import xyz.duncanruns.julti.instance.GameOptions;
 import xyz.duncanruns.julti.instance.MinecraftInstance;
 import xyz.duncanruns.julti.management.InstanceManager;
+import xyz.duncanruns.julti.util.GameOptionsUtil;
 import xyz.duncanruns.julti.util.WindowStateUtil;
 import xyz.duncanruns.julti.win32.User32;
 
@@ -64,32 +66,37 @@ public class ResizeCommand extends Command {
         }
 
         // eyesee
-        if (args.length > 2 && args[2].equals("zoom")) {
-            EyeSeeGUI gui = MoveResizePlugin.getESGui();
-            if (!gui.isShowing()) {
-                gui.showEyeSee(boundsToSet, mcHwnd);
-            } else {
-                gui.hideEyeSee();
-            }
-        }
 
         if (!stretching) {
-            WindowStateUtil.setHwndStyle(mcHwnd, MoveResizePlugin.winStyle);
+            if (MoveResizePlugin.wasFullscreen) {
+                activeInstance.getKeyPresser().pressKey(GameOptionsUtil.getKey(activeInstance.getPath(), "key_key.fullscreen", false));
+            }
+                WindowStateUtil.setHwndStyle(mcHwnd, MoveResizePlugin.winStyle);
         } else {
-            MoveResizePlugin.winStyle = WindowStateUtil.getHwndStyle(mcHwnd);
-            WindowStateUtil.setHwndBorderless(mcHwnd);
+            MoveResizePlugin.wasFullscreen = activeInstance.isFullscreen();
+            if (MoveResizePlugin.wasFullscreen)
+            {
+                activeInstance.ensureNotFullscreen();
+            }
+                MoveResizePlugin.winStyle = WindowStateUtil.getHwndStyle(mcHwnd);
+                WindowStateUtil.setHwndBorderless(mcHwnd);
         }
 
         // credits to priffin/tallmacro
-        User32.INSTANCE.SetForegroundWindow(mcHwnd);
-        User32.INSTANCE.SetWindowPos(
+        if (User32.INSTANCE.SetWindowPos(
                 mcHwnd,
                 new WinDef.HWND(new Pointer(0)),
                 boundsToSet.x,
                 boundsToSet.y,
                 boundsToSet.width,
                 boundsToSet.height,
-                new WinDef.UINT(0x0400)
-        );
+                new WinDef.UINT(0x0400))
+        ) {
+            if (args.length > 2 && args[2].equals("zoom")) {
+                if (!stretching) MoveResizePlugin.getESGui().hideEyeSee();
+                else MoveResizePlugin.getESGui().showEyeSee(boundsToSet, activeInstance);
+            }
+            User32.INSTANCE.SetForegroundWindow(mcHwnd);
+        }
     }
 }
