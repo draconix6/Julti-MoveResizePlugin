@@ -17,6 +17,7 @@ public class OverlayGUI extends JFrame {
 
     public OverlayGUI() {
         this.setTitle("EyeSee Overlay");
+        this.setType(Type.UTILITY);
         this.setUndecorated(true);
         this.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.0f));
         this.setLocationRelativeTo(null);
@@ -27,11 +28,12 @@ public class OverlayGUI extends JFrame {
         this.setContentPane(panel);
 
         this.setVisible(true);
-
         this.hwnd = new WinDef.HWND(Native.getWindowPointer(this));
         User32.INSTANCE.BringWindowToTop(this.hwnd);
 
         this.icon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/overlay.png")));
         this.label = new JLabel(this.icon);
+
+        this.setVisible(false);
     }
 }

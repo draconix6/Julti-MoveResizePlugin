@@ -43,7 +43,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         this.setResizable(false);
         this.setTitle("Julti EyeSee");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        this.setType(Type.UTILITY);
+        this.setType(Type.UTILITY);
         this.setAlwaysOnTop(true);
         this.overlay.setAlwaysOnTop(true);
 
@@ -57,7 +57,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         // 30 = refresh rate
         // TODO: adjustable?
         this.executor.scheduleAtFixedRate(this::tick, 50_000_000, 1_000_000_000L / 30, TimeUnit.NANOSECONDS);
-//        this.setVisible(false);
+        this.setVisible(false);
 
 //        this.showEyeSee();
     }
@@ -67,7 +67,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         if (activeInst == null) return;
 
         // get snapshot of MC window
-        sourceHwnd = User32.INSTANCE.GetForegroundWindow(); // activeInst.getHwnd();
+        sourceHwnd = activeInst.getHwnd();
         Rectangle rectangle = getYoinkArea(sourceHwnd);
         WinDef.HDC sourceHDC = User32.INSTANCE.GetDC(sourceHwnd);
         WinDef.HDC eyeSeeHDC = User32.INSTANCE.GetDC(eyeSeeHwnd);
@@ -81,7 +81,8 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         Julti.log(Level.DEBUG, "Showing EyeSee...");
         activeInst = inst;
         currentlyShowing = true;
-        setVisible(true);
+        this.setVisible(true);
+        this.overlay.setVisible(true);
 
         // TODO: readd manual setting of these values later !
         // credit to priffin for these calculations
@@ -124,6 +125,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
             this.overlay.add(this.overlay.label);
         }
 
+        // move overlay window
         User32.INSTANCE.SetWindowPos(
                 this.overlay.hwnd,
                 new WinDef.HWND(new Pointer(0)),
@@ -141,21 +143,22 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
     public void hideEyeSee() {
         Julti.log(Level.DEBUG, "Hiding EyeSee...");
         currentlyShowing = false;
+        this.setVisible(false);
+        this.overlay.setVisible(false);
 
-        MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
-        User32.INSTANCE.SetWindowPos(
-                eyeSeeHwnd,
-                new WinDef.HWND(new Pointer(0)),
-                0,
-                -monitor.height,
-                1,
-                1,
-                0x0400
-        );
+//        MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
+//        User32.INSTANCE.SetWindowPos(
+//                eyeSeeHwnd,
+//                new WinDef.HWND(new Pointer(0)),
+//                0,
+//                -monitor.height,
+//                1,
+//                1,
+//                0x0400
+//        );
 
-        if (this.overlay == null) return;
-        this.overlay.setSize(1, 1);
-        this.overlay.setLocation(0, -monitor.height);
+//        this.overlay.setSize(1, 1);
+//        this.overlay.setLocation(0, -monitor.height);
     }
 
     @Override

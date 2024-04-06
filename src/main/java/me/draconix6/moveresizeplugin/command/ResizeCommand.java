@@ -53,7 +53,7 @@ public class ResizeCommand extends Command {
         WinDef.HWND mcHwnd = activeInstance.getHwnd();
 
         boolean stretching = true;
-        boolean zooming = args.length > 2 && args[2].equals("zoom");
+        boolean useMagnifier = args.length > 2 && args[2].equals("zoom");
 
         Rectangle currentBounds = WindowStateUtil.getHwndRectangle(mcHwnd);
         Rectangle boundsToSet = new Rectangle(options.windowPos[0], options.windowPos[1], Integer.parseInt(args[0]), Integer.parseInt(args[1]));
@@ -66,24 +66,14 @@ public class ResizeCommand extends Command {
             boundsToSet = WindowStateUtil.withTopLeftToCenter(boundsToSet);
         }
 
-        // eyesee
-//        if (args.length > 2 && args[2].equals("zoom")) {
-//            EyeSeeGUI gui = MoveResizePlugin.getESGui();
-//            if (!gui.isShowing()) {
-//                gui.showEyeSee(boundsToSet, activeInstance);
-//            } else {
-//                gui.hideEyeSee();
-//            }
-//        }
-
         if (!stretching) {
-            if (MoveResizePlugin.wasFullscreen && zooming) {
+            if (MoveResizePlugin.wasFullscreen && useMagnifier) {
                 GameOptions go = activeInstance.getGameOptions();
                 activeInstance.getKeyPresser().pressKey(go.fullscreenKey);
             }
             WindowStateUtil.setHwndStyle(mcHwnd, MoveResizePlugin.winStyle);
         } else {
-            if (zooming) {
+            if (useMagnifier) {
                 MoveResizePlugin.wasFullscreen = activeInstance.isFullscreen();
                 if (MoveResizePlugin.wasFullscreen) {
                     activeInstance.ensureNotFullscreen();
