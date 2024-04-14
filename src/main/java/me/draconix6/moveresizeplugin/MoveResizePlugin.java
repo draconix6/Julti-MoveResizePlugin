@@ -56,7 +56,11 @@ public class MoveResizePlugin implements PluginInitializer {
 
     @Override
     public void onMenuButtonPress() {
-        JOptionPane.showMessageDialog(JultiGUI.getPluginsGUI(), "More config coming soon, check github.com/draconix6/Julti-MoveResizePlugin for updates.", "Julti Move Resize Plugin", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public boolean hasMenuButton() {
+        return false;
     }
 
     public static EyeSeeGUI getESGui() {
