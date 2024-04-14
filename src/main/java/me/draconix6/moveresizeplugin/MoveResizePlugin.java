@@ -4,6 +4,7 @@ import com.google.common.io.Resources;
 import me.draconix6.moveresizeplugin.command.CursorSpeedCommand;
 import me.draconix6.moveresizeplugin.command.ResizeCommand;
 import me.draconix6.moveresizeplugin.gui.EyeSeeGUI;
+import me.draconix6.moveresizeplugin.lua.MoveResizeLuaLibrary;
 import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.JultiAppLaunch;
@@ -12,6 +13,7 @@ import xyz.duncanruns.julti.gui.JultiGUI;
 import xyz.duncanruns.julti.plugin.PluginEvents;
 import xyz.duncanruns.julti.plugin.PluginInitializer;
 import xyz.duncanruns.julti.plugin.PluginManager;
+import xyz.duncanruns.julti.script.lua.LuaLibraries;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +48,7 @@ public class MoveResizePlugin implements PluginInitializer {
 
         CommandManager.getMainManager().registerCommand(new ResizeCommand());
         CommandManager.getMainManager().registerCommand(new CursorSpeedCommand());
+        LuaLibraries.registerLuaLibrary(MoveResizeLuaLibrary::new);
         Julti.log(Level.INFO, "Move & Resize Plugin Initialized");
     }
 
