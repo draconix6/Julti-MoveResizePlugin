@@ -28,7 +28,6 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
     private final OverlayGUI overlay = new OverlayGUI();
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-    private WinDef.HWND sourceHwnd;
     private MinecraftInstance activeInst;
 
     private final WinDef.HWND eyeSeeHwnd;
@@ -66,7 +65,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         if (activeInst == null) return;
 
         // get snapshot of MC window
-        sourceHwnd = activeInst.getHwnd();
+        WinDef.HWND sourceHwnd = activeInst.getHwnd();
         Rectangle rectangle = getYoinkArea(sourceHwnd);
         WinDef.HDC sourceHDC = User32.INSTANCE.GetDC(sourceHwnd);
         WinDef.HDC eyeSeeHDC = User32.INSTANCE.GetDC(eyeSeeHwnd);
