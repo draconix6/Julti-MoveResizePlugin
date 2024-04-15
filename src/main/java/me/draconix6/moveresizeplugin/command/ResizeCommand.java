@@ -3,9 +3,6 @@ package me.draconix6.moveresizeplugin.command;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
 import me.draconix6.moveresizeplugin.MoveResizePlugin;
-import me.draconix6.moveresizeplugin.gui.EyeSeeGUI;
-import org.apache.logging.log4j.Level;
-import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.JultiOptions;
 import xyz.duncanruns.julti.cancelrequester.CancelRequester;
 import xyz.duncanruns.julti.command.Command;
@@ -13,7 +10,6 @@ import xyz.duncanruns.julti.command.CommandFailedException;
 import xyz.duncanruns.julti.instance.GameOptions;
 import xyz.duncanruns.julti.instance.MinecraftInstance;
 import xyz.duncanruns.julti.management.InstanceManager;
-import xyz.duncanruns.julti.util.GameOptionsUtil;
 import xyz.duncanruns.julti.util.WindowStateUtil;
 import xyz.duncanruns.julti.win32.User32;
 

@@ -9,13 +9,11 @@ import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.JultiAppLaunch;
 import xyz.duncanruns.julti.command.CommandManager;
-import xyz.duncanruns.julti.gui.JultiGUI;
 import xyz.duncanruns.julti.plugin.PluginEvents;
 import xyz.duncanruns.julti.plugin.PluginInitializer;
 import xyz.duncanruns.julti.plugin.PluginManager;
 import xyz.duncanruns.julti.script.lua.LuaLibraries;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -34,6 +32,14 @@ public class MoveResizePlugin implements PluginInitializer {
         JultiAppLaunch.launchWithDevPlugin(args, PluginManager.JultiPluginData.fromString(
                 Resources.toString(Resources.getResource(MoveResizePlugin.class, "/julti.plugin.json"), Charset.defaultCharset())
         ), new MoveResizePlugin());
+    }
+
+    public static EyeSeeGUI getESGui() {
+        if (gui == null) {
+            gui = new EyeSeeGUI();
+            gui.hideEyeSee();
+        }
+        return gui;
     }
 
     @Override
@@ -64,13 +70,5 @@ public class MoveResizePlugin implements PluginInitializer {
     @Override
     public boolean hasMenuButton() {
         return false;
-    }
-
-    public static EyeSeeGUI getESGui() {
-        if (gui == null) {
-            gui = new EyeSeeGUI();
-            gui.hideEyeSee();
-        }
-        return gui;
     }
 }
