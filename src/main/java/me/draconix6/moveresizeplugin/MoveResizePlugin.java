@@ -59,11 +59,6 @@ public class MoveResizePlugin implements PluginInitializer {
     }
 
     @Override
-    public String getMenuButtonName() {
-        return "Coming Soon";
-    }
-
-    @Override
     public void onMenuButtonPress() {
     }
 
