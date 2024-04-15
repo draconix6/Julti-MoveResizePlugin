@@ -84,7 +84,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
         // TODO: readd manual setting of these values later !
         // credit to priffin for these calculations
-        MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
+        // MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
         // temp fix to incorrect MonitorUtil
         DisplayMode dm = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
         int projectorWidth = (dm.getWidth() - zoomRect.width) / 2;
