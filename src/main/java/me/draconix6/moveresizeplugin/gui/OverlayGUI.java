@@ -2,8 +2,6 @@ package me.draconix6.moveresizeplugin.gui;
 
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.WinDef;
-import org.apache.logging.log4j.Level;
-import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.win32.User32;
 
 import javax.swing.*;

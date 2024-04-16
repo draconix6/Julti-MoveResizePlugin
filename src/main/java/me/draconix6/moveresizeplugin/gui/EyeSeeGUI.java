@@ -16,7 +16,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +28,6 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
     private final OverlayGUI overlay = new OverlayGUI();
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-    private WinDef.HWND sourceHwnd;
     private MinecraftInstance activeInst;
 
     private final WinDef.HWND eyeSeeHwnd;
@@ -67,7 +65,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         if (activeInst == null) return;
 
         // get snapshot of MC window
-        sourceHwnd = activeInst.getHwnd();
+        WinDef.HWND sourceHwnd = activeInst.getHwnd();
         Rectangle rectangle = getYoinkArea(sourceHwnd);
         WinDef.HDC sourceHDC = User32.INSTANCE.GetDC(sourceHwnd);
         WinDef.HDC eyeSeeHDC = User32.INSTANCE.GetDC(eyeSeeHwnd);
@@ -86,7 +84,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
         // TODO: readd manual setting of these values later !
         // credit to priffin for these calculations
-        MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
+        // MonitorUtil.Monitor monitor = MonitorUtil.getPrimaryMonitor();
         // temp fix to incorrect MonitorUtil
         DisplayMode dm = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
         int projectorWidth = (dm.getWidth() - zoomRect.width) / 2;
@@ -189,7 +187,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
         executor.shutdownNow();
-        System.out.println("EyeSee Closed.");
+        Julti.log(Level.DEBUG,"EyeSee Closed.");
     }
 
     @Override

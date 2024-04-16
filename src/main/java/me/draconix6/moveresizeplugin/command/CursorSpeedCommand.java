@@ -10,6 +10,15 @@ import xyz.duncanruns.julti.command.Command;
 
 public class CursorSpeedCommand extends Command {
 
+    /**
+     * @author DuncanRuns
+     */
+    private static int getCurrentCursorSpeed() {
+        IntByReference ref = new IntByReference(0);
+        User32Extra.INSTANCE.SystemParametersInfoA(0x70, 0, ref, 0);
+        return ref.getValue();
+    }
+
     @Override
     public String helpDescription() {
         return "cursorspeed [speed] - Changes the Windows cursor speed. Saves the previous cursor speed to toggle back.\n" +
@@ -40,7 +49,7 @@ public class CursorSpeedCommand extends Command {
         Julti.log(Level.DEBUG, "Current cursor speed: " + currentSpeed);
 
         // has explicit initial speed - set to it
-         if ((args.length > 1 && currentSpeed != Integer.parseInt(args[1]))) {
+        if ((args.length > 1 && currentSpeed != Integer.parseInt(args[1]))) {
             User32Extra.INSTANCE.SystemParametersInfoA(0x71, 0, Integer.parseInt(args[1]), 0);
             return;
         }
@@ -54,14 +63,5 @@ public class CursorSpeedCommand extends Command {
             return;
         }
         User32Extra.INSTANCE.SystemParametersInfoA(0x71, 0, Integer.parseInt(args[0]), 0);
-    }
-
-    /**
-     * @author DuncanRuns
-     */
-    private static int getCurrentCursorSpeed(){
-        IntByReference ref = new IntByReference(0);
-        User32Extra.INSTANCE.SystemParametersInfoA(0x70, 0, ref, 0);
-        return ref.getValue();
     }
 }

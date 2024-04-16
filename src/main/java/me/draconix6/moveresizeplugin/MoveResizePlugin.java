@@ -4,16 +4,16 @@ import com.google.common.io.Resources;
 import me.draconix6.moveresizeplugin.command.CursorSpeedCommand;
 import me.draconix6.moveresizeplugin.command.ResizeCommand;
 import me.draconix6.moveresizeplugin.gui.EyeSeeGUI;
+import me.draconix6.moveresizeplugin.lua.MoveResizeLuaLibrary;
 import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.JultiAppLaunch;
 import xyz.duncanruns.julti.command.CommandManager;
-import xyz.duncanruns.julti.gui.JultiGUI;
 import xyz.duncanruns.julti.plugin.PluginEvents;
 import xyz.duncanruns.julti.plugin.PluginInitializer;
 import xyz.duncanruns.julti.plugin.PluginManager;
+import xyz.duncanruns.julti.script.lua.LuaLibraries;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -34,6 +34,14 @@ public class MoveResizePlugin implements PluginInitializer {
         ), new MoveResizePlugin());
     }
 
+    public static EyeSeeGUI getESGui() {
+        if (gui == null) {
+            gui = new EyeSeeGUI();
+            gui.hideEyeSee();
+        }
+        return gui;
+    }
+
     @Override
     public void initialize() {
         // This gets run once when Julti launches
@@ -46,24 +54,16 @@ public class MoveResizePlugin implements PluginInitializer {
 
         CommandManager.getMainManager().registerCommand(new ResizeCommand());
         CommandManager.getMainManager().registerCommand(new CursorSpeedCommand());
+        LuaLibraries.registerLuaLibrary(MoveResizeLuaLibrary::new);
         Julti.log(Level.INFO, "Move & Resize Plugin Initialized");
     }
 
     @Override
-    public String getMenuButtonName() {
-        return "Coming Soon";
+    public void onMenuButtonPress() {
     }
 
     @Override
-    public void onMenuButtonPress() {
-        JOptionPane.showMessageDialog(JultiGUI.getPluginsGUI(), "More config coming soon, check github.com/draconix6/Julti-MoveResizePlugin for updates.", "Julti Move Resize Plugin", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public static EyeSeeGUI getESGui() {
-        if (gui == null) {
-            gui = new EyeSeeGUI();
-            gui.hideEyeSee();
-        }
-        return gui;
+    public boolean hasMenuButton() {
+        return false;
     }
 }

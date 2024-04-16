@@ -12,6 +12,7 @@ public interface User32Extra extends User32 {
 
     // For giving an integer an IntByReference is not needed
     boolean SystemParametersInfoA(int uiAction, int uiParam, int pvParam, int fWinIni);
+
     // But it is needed for taking an output
     boolean SystemParametersInfoA(int uiAction, int uiParam, IntByReference pvParam, int fWinIni);
 }
