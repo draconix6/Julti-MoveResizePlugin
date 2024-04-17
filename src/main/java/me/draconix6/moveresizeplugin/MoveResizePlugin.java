@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.JultiAppLaunch;
 import xyz.duncanruns.julti.command.CommandManager;
+import xyz.duncanruns.julti.instance.MinecraftInstance;
 import xyz.duncanruns.julti.plugin.PluginEvents;
 import xyz.duncanruns.julti.plugin.PluginInitializer;
 import xyz.duncanruns.julti.plugin.PluginManager;
@@ -48,6 +49,11 @@ public class MoveResizePlugin implements PluginInitializer {
         PluginEvents.RunnableEventType.RELOAD.register(() -> {
             // This gets run when Julti launches and every time the profile is switched
             Julti.log(Level.INFO, "Move & Resize Plugin Reloaded!");
+        });
+
+        PluginEvents.InstanceEventType.RESET.register((MinecraftInstance inst) -> {
+            if (gui != null) gui.hideEyeSee();
+            inst.ensureResettingWindowState(true);
         });
 
         getESGui();
