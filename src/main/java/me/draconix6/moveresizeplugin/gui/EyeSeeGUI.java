@@ -8,7 +8,6 @@ import me.draconix6.moveresizeplugin.win32.GDI32Extra;
 import org.apache.logging.log4j.Level;
 import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.instance.MinecraftInstance;
-import xyz.duncanruns.julti.util.MonitorUtil;
 import xyz.duncanruns.julti.util.WindowStateUtil;
 import xyz.duncanruns.julti.win32.User32;
 
@@ -36,7 +35,6 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
 
     public EyeSeeGUI() {
         super();
-        Julti.log(Level.INFO, "hi");
         this.addWindowListener(this);
         this.setResizable(false);
         this.setTitle("Julti EyeSee");
@@ -49,7 +47,6 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         this.setVisible(true);
         eyeSeeHwnd = new WinDef.HWND(Native.getWindowPointer(this));
         WindowStateUtil.setHwndBorderless(eyeSeeHwnd);
-        Julti.log(Level.INFO, "hi");
 
         tick();
         // 30 = refresh rate

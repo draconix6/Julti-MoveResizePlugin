@@ -63,18 +63,18 @@ public class ResizeCommand extends Command {
         }
 
         if (!stretching) {
-            if (MoveResizePlugin.wasFullscreen && useMagnifier) {
+            if (MoveResizePlugin.wasFullscreen) { // && useMagnifier
                 GameOptions go = activeInstance.getGameOptions();
                 activeInstance.getKeyPresser().pressKey(go.fullscreenKey);
             }
             WindowStateUtil.setHwndStyle(mcHwnd, MoveResizePlugin.winStyle);
         } else {
-            if (useMagnifier) {
+            // if (useMagnifier) {
                 MoveResizePlugin.wasFullscreen = activeInstance.isFullscreen();
                 if (MoveResizePlugin.wasFullscreen) {
                     activeInstance.ensureNotFullscreen();
                 }
-            }
+            // }
             MoveResizePlugin.winStyle = WindowStateUtil.getHwndStyle(mcHwnd);
             WindowStateUtil.setHwndBorderless(mcHwnd);
         }
@@ -90,7 +90,10 @@ public class ResizeCommand extends Command {
                 new WinDef.UINT(0x0400))
         ) {
             if (args.length > 2 && args[2].equals("zoom")) {
-                if (!stretching) MoveResizePlugin.getESGui().hideEyeSee();
+                if (!stretching) {
+//                    Julti.log(Level.INFO, "hi");
+                    MoveResizePlugin.getESGui().hideEyeSee();
+                }
                 else MoveResizePlugin.getESGui().showEyeSee(boundsToSet, activeInstance);
             }
             User32.INSTANCE.SetForegroundWindow(mcHwnd);
