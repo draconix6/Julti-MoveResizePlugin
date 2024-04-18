@@ -53,7 +53,7 @@ public class MoveResizePlugin implements PluginInitializer {
 
         PluginEvents.InstanceEventType.RESET.register((MinecraftInstance inst) -> {
             if (gui != null) gui.hideEyeSee();
-            inst.ensureResettingWindowState(true);
+//            inst.ensureResettingWindowState(true);
         });
 
         getESGui();
