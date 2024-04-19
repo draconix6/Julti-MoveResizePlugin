@@ -70,6 +70,9 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         // render MC window to EyeSee window
         GDI32Extra.INSTANCE.SetStretchBltMode(eyeSeeHDC, 3);
         GDI32Extra.INSTANCE.StretchBlt(eyeSeeHDC, 0, 0, bounds.width, bounds.height, sourceHDC, rectangle.x, rectangle.y, rectangle.width, rectangle.height, SRCCOPY);
+
+        User32.INSTANCE.ReleaseDC(sourceHwnd, sourceHDC);
+        User32.INSTANCE.ReleaseDC(eyeSeeHwnd, eyeSeeHDC);
     }
 
     public void showEyeSee(Rectangle zoomRect, MinecraftInstance inst) {
