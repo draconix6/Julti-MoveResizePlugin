@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.AffineTransform;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -117,7 +118,11 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
             MoveResizePlugin.prevWindowSize = zoomRect;
 
             Image image = this.overlay.icon.getImage();
-            Image newImage = image.getScaledInstance(projectorWidth, projectorHeight, Image.SCALE_SMOOTH);
+            // undo system scaling
+            AffineTransform transform = getGraphicsConfiguration().getDefaultTransform();
+            double scaleX = transform.getScaleX();
+            double scaleY = transform.getScaleY();
+            Image newImage = image.getScaledInstance((int) (projectorWidth/scaleX), (int) (projectorHeight/scaleY), Image.SCALE_SMOOTH);
             this.overlay.icon = new ImageIcon(newImage);
             this.overlay.label = new JLabel(this.overlay.icon);
             this.overlay.add(this.overlay.label);
