@@ -1,6 +1,7 @@
 package me.draconix6.moveresizeplugin.command;
 
 import me.draconix6.moveresizeplugin.MoveResizePlugin;
+import xyz.duncanruns.julti.Julti;
 import xyz.duncanruns.julti.cancelrequester.CancelRequester;
 import xyz.duncanruns.julti.command.Command;
 import xyz.duncanruns.julti.command.CommandFailedException;
@@ -44,7 +45,9 @@ public class ResizeCommand extends Command {
         boolean useMagnifier = args.length > 2;
         int width = Integer.parseInt(args[0]);
         int height = Integer.parseInt(args[1]);
-
-        MoveResizePlugin.toggleResize(instance, width, height, useMagnifier);
+        
+        synchronized (Julti.getJulti()) {
+            MoveResizePlugin.toggleResize(instance, width, height, useMagnifier);
+        }
     }
 }
