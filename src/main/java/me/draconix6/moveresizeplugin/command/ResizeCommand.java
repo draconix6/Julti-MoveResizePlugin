@@ -45,7 +45,7 @@ public class ResizeCommand extends Command {
         boolean useMagnifier = args.length > 2;
         int width = Integer.parseInt(args[0]);
         int height = Integer.parseInt(args[1]);
-        
+
         synchronized (Julti.getJulti()) {
             MoveResizePlugin.toggleResize(instance, width, height, useMagnifier);
         }

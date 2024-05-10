@@ -187,7 +187,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
         executor.shutdownNow();
-        Julti.log(Level.DEBUG,"EyeSee Closed.");
+        Julti.log(Level.DEBUG, "EyeSee Closed.");
     }
 
     @Override
