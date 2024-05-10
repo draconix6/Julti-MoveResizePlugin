@@ -127,4 +127,9 @@ public class MoveResizeLuaLibrary extends LuaLibrary {
     public boolean isFullscreen(int instanceNum) {
         return getInstanceFromInt(instanceNum).isFullscreen();
     }
+
+    @LuaDocumentation(description = "Runs the toggle resize functionality. The return value will be true if the instance is resized to the specified value and false if the resize is reversed back to the playing window size.")
+    public boolean toggleResize(int instanceNum, int width, int height, boolean useMagnifier) {
+        return MoveResizePlugin.toggleResize(getInstanceFromInt(instanceNum), width, height, useMagnifier);
+    }
 }
