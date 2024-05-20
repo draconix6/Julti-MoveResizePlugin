@@ -1,6 +1,6 @@
 Plugin for [Julti](https://github.com/duncanruns/julti) which allows for moving & resizing instances. As of **Julti 1.4.0**, this plugin is included with Julti. If you had it installed before, you may now remove the .jar from Julti's plugin folder.
 
-### [Incredible video tutorial by osh](https://www.youtu.be/oY8W9Esxyb0) (setup Julti first!)
+### [Incredible video tutorial by osh](https://youtu.be/oY8W9Esxyb0) (setup Julti first!)
 
 **If you're using ranked/practice instances** that aren't practical to set up in Julti, try Julti Options > Other > Enable Experimental Options, then in Experimental > Utility Mode.
 
