@@ -100,14 +100,21 @@ public class MoveResizeLuaLibrary extends LuaLibrary {
             if (options.windowPosIsCenter) {
                 boundsToSet = WindowStateUtil.withTopLeftToCenter(boundsToSet);
             }
+            resizeInstance(instanceNum, boundsToSet.width, boundsToSet.height, boundsToSet.x, boundsToSet.y);
+        }
+    }
+
+    @LuaDocumentation(description = "Resizes the specified instance to the specified width, height, X and Y position.")
+    public void resizeInstance(int instanceNum, int width, int height, int x, int y) {
+        synchronized (Julti.getJulti()) {
             // credits to priffin/tallmacro
             User32.INSTANCE.SetWindowPos(
                     getInstanceFromInt(instanceNum).getHwnd(),
                     new WinDef.HWND(new Pointer(0)),
-                    boundsToSet.x,
-                    boundsToSet.y,
-                    boundsToSet.width,
-                    boundsToSet.height,
+                    x,
+                    y,
+                    width,
+                    height,
                     new WinDef.UINT(0x0400));
         }
     }

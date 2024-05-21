@@ -21,7 +21,7 @@ compileJava {
 
 dependencies {
     // Choose Julti version: https://jitpack.io/#DuncanRuns/Julti
-    implementation 'com.github.DuncanRuns:Julti:6b96ff51d8'
+    implementation 'com.github.DuncanRuns:Julti:v1.4.1'
 }
 
 
