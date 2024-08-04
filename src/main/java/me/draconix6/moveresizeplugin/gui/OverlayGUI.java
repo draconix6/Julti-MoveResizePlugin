@@ -21,7 +21,7 @@ public class OverlayGUI extends JFrame {
 
     public OverlayGUI() {
         this.setTitle("EyeSee Overlay");
-        this.setType(Type.UTILITY);
+//        this.setType(Type.UTILITY);
         this.setUndecorated(true);
         this.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.0f));
         this.setLocationRelativeTo(null);

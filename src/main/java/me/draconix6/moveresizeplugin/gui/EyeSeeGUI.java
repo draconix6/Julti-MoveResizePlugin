@@ -40,7 +40,7 @@ public class EyeSeeGUI extends JFrame implements WindowListener {
         this.setResizable(false);
         this.setTitle("Julti EyeSee");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setType(Type.UTILITY);
+//        this.setType(Type.UTILITY);
         this.setAlwaysOnTop(true);
         this.overlay.setAlwaysOnTop(true);
 
